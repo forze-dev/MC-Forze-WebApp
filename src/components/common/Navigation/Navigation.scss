@@ -1,0 +1,124 @@
+nav.menu {
+	ul {
+		display: flex;
+		list-style: none;
+		gap: 30px;
+		align-items: center;
+	}
+
+	li {
+		display: block;
+		font-size: 1.1rem;
+		font-weight: 600;
+		padding: 6px 12px;
+		border-radius: 12px;
+	}
+
+	li.active {
+		border: 3px dashed var(--accent);
+	}
+	.icon-box {
+		display: none;
+	}
+}
+
+@media all and (max-width: 900px) {
+	nav.menu {
+		ul {
+			display: flex;
+			list-style: none;
+			gap: 10px;
+			align-items: center;
+		}
+
+		li {
+			font-size: 1rem;
+			padding: 4px 8px;
+		}
+	}
+}
+
+@media all and (max-width: 600px) {
+	nav.menu {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		ul {
+			background: var(--background);
+			height: 60px;
+			display: flex;
+			list-style: none;
+			gap: 10px;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 15px;
+		}
+
+		li {
+			font-size: 0.8rem;
+			padding: 0;
+			font-weight: 400;
+			width: 56px;
+		}
+
+		a {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		li.active {
+			border: none;
+		}
+
+		li:nth-child(1) .icon-box {
+			background-image: url("/assets/icons/home.svg");
+		}
+
+		li:nth-child(2) .icon-box {
+			background-image: url("/assets/icons/store.svg");
+		}
+
+		li:nth-child(3) .icon-box {
+			background-image: url("/assets/icons/game.svg");
+		}
+
+		li:nth-child(4) .icon-box {
+			background-image: url("/assets/icons/events.svg");
+		}
+
+		li:nth-child(5) .icon-box {
+			background-image: url("/assets/icons/profile.svg");
+		}
+
+		li.active:nth-child(1) .icon-box {
+			background-image: url("/assets/icons/a-home.svg");
+		}
+
+		li.active:nth-child(2) .icon-box {
+			background-image: url("/assets/icons/a-store.svg");
+		}
+
+		li.active:nth-child(3) .icon-box {
+			background-image: url("/assets/icons/a-game.svg");
+		}
+
+		li.active:nth-child(4) .icon-box {
+			background-image: url("/assets/icons/a-events.svg");
+		}
+
+		li.active:nth-child(5) .icon-box {
+			background-image: url("/assets/icons/a-profile.svg");
+		}
+
+		.icon-box {
+			height: 32px;
+			width: 32px;
+			display: inline-block;
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
+		}
+	}
+}

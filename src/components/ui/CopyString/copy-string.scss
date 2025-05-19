@@ -1,0 +1,27 @@
+.copy-container {
+	display: inline-flex;
+	align-items: center;
+	background: #1a1a1a;
+	padding: 0.4rem 0.8rem;
+	border-radius: 6px;
+	color: #fff;
+	font-family: monospace;
+	cursor: pointer;
+	transition: background 0.2s;
+
+	&:hover {
+		background: #2c2c2c;
+	}
+
+	.ip {
+		margin-left: 0.5rem;
+		user-select: none;
+	}
+
+	.icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #bbb;
+	}
+}
