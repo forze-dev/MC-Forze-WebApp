@@ -41,7 +41,6 @@
 		align-items: center;
 		background: rgba(0, 0, 0, 0.3);
 		border-radius: 6px;
-		padding: 12px 15px;
 		transition: all 0.2s ease;
 		border: 1px solid transparent;
 
@@ -52,18 +51,19 @@
 
 		svg {
 			color: var(--accent);
-			margin-right: 10px;
+			margin-left: 15px;
+			margin-right: 5px;
 			flex-shrink: 0;
 		}
 
 		input {
+			padding: 12px 10px;
 			width: 100%;
 			background: transparent;
 			border: none;
 			color: var(--foreground);
 			font-size: 16px;
 			outline: none;
-			padding: 0;
 
 			&::placeholder {
 				color: rgba(255, 255, 255, 0.5);
@@ -192,9 +192,9 @@
 		}
 
 		.input-group {
-			padding: 10px 12px;
-
 			input {
+				padding: 10px;
+
 				font-size: 14px;
 			}
 

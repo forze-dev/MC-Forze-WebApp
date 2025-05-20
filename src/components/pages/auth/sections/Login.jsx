@@ -32,7 +32,6 @@ function Login() {
 
 		try {
 			await login(formData.username, formData.password);
-			// Перенаправлення відбудеться в контексті авторизації
 		} catch (err) {
 			setError(err.message);
 		} finally {
