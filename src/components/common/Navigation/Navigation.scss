@@ -1,21 +1,28 @@
 nav.menu {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 70%;
+	z-index: 9998;
 	ul {
 		display: flex;
 		list-style: none;
-		gap: 30px;
+		justify-content: center;
+		gap: 35px;
 		align-items: center;
+		height: 60px;
 	}
 
 	li {
 		display: block;
 		font-size: 1.1rem;
-		font-weight: 600;
-		padding: 6px 12px;
-		border-radius: 12px;
+		font-weight: 400;
+		padding: 6px;
 	}
 
 	li.active {
-		border: 3px dashed var(--accent);
+		border-bottom: 3px dashed var(--accent);
 	}
 	.icon-box {
 		display: none;
@@ -38,13 +45,15 @@ nav.menu {
 	}
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 640px) {
 	nav.menu {
-		position: fixed;
-		bottom: 0;
-		left: 0;
 		width: 100%;
+		transform: none;
+		bottom: 0;
+		top: auto;
+		left: 0;
 		ul {
+			box-shadow: 1px 1px 4px var(--background);
 			background: var(--background);
 			height: 60px;
 			display: flex;

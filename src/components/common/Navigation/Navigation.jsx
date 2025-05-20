@@ -1,9 +1,11 @@
 import { NavLink, useLocation } from "react-router-dom"
 import { ROUTES } from "../../../constants/routes"
+import { useAuth } from "../../../contexts/AuthContext"
 import "./Navigation.scss"
 
 const Navigation = () => {
 	const { pathname } = useLocation();
+	const { user } = useAuth()
 
 	return (
 		<nav className="menu">
@@ -48,16 +50,19 @@ const Navigation = () => {
 						</span>
 					</NavLink>
 				</li>
-				<li className={`btn ${pathname === ROUTES.PROFILE ? "active" : ""}`}>
-					<NavLink to={ROUTES.PROFILE}>
-						<figure className="icon-box">
+				{
+					user &&
+					<li className={`btn ${pathname === ROUTES.PROFILE ? "active" : ""}`}>
+						<NavLink to={ROUTES.PROFILE}>
+							<figure className="icon-box">
 
-						</figure>
-						<span>
-							Профіль
-						</span>
-					</NavLink>
-				</li>
+							</figure>
+							<span>
+								Профіль
+							</span>
+						</NavLink>
+					</li>
+				}
 			</ul>
 		</nav >
 	)

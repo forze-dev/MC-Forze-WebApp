@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 
 function ProtectedRoute({ children }) {
-	const { user, loading, isAuthenticated } = useAuth();
+	const { loading, isAuthenticated } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
 

@@ -12,7 +12,8 @@ axios.interceptors.response.use(
 		const originalRequest = error.config;
 
 		// Якщо це 401 і запит ще не повторювався
-		if (error.response?.status === 401 && !originalRequest._retry) {
+		if (error.response?.status === 401 && !originalRequest._retry
+			&& !originalRequest.url.includes('/auth/login')) {
 			originalRequest._retry = true;
 
 			try {
@@ -57,7 +58,6 @@ export function AuthProvider({ children }) {
 			?.split('=')[1];
 	};
 
-	// Перевірка авторизації при завантаженні
 	useEffect(() => {
 		const token = getToken();
 

@@ -3,6 +3,7 @@ header {
 	top: 0;
 	left: 0;
 	width: 100%;
+	z-index: 9998;
 	background: var(--background);
 
 	&.header-without-back {
@@ -14,5 +15,23 @@ header {
 		justify-content: space-between;
 		align-items: center;
 		height: 60px;
+	}
+}
+
+header.scrolled {
+	background: var(--background) !important;
+}
+
+@media all and (max-width: 640px) {
+	header {
+		box-shadow: 1px 1px 4px var(--background);
+
+		&.header-without-back {
+			box-shadow: none;
+		}
+	}
+
+	header.scrolled {
+		box-shadow: 1px 1px 4px var(--background);
 	}
 }

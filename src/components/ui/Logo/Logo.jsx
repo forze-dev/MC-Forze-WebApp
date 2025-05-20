@@ -6,7 +6,7 @@ const Logo = () => {
 	return (
 		<div className="logo">
 			<Link to={ROUTES.HOME}>
-				MINE.FORZE.SPACE
+				FORZE SPACE
 			</Link>
 		</div>
 	)

@@ -1,0 +1,84 @@
+.Parts {
+	margin: 120px 0;
+
+	h2 {
+		font-size: 32px;
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
+	.subtitle {
+		text-align: center;
+	}
+
+	.Parts__wrapper {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 30px;
+		margin-top: 100px;
+	}
+
+	.Parts__card {
+		min-height: 320px;
+		width: 320px;
+		background: var(--background);
+		padding: 20px;
+		border-radius: 20px;
+		text-align: center;
+		position: relative; /* Додано для правильного позиціонування */
+	}
+
+	.Parts__card .Parts__card-img {
+		width: 180px;
+		height: 180px;
+		display: block;
+		margin: 0 auto;
+		margin-top: -80px;
+		margin-bottom: 15px;
+
+		/* Анімація паріння */
+		animation: floating 3s ease-in-out infinite;
+		/* Тінь для ефекту об'ємності */
+		filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+	}
+
+	.Parts__card h3 {
+		font-size: 20px;
+		margin-bottom: 20px;
+		span {
+			color: var(--accent);
+		}
+	}
+
+	/* Keyframes для анімації паріння */
+	@keyframes floating {
+		0% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-15px);
+		}
+		100% {
+			transform: translateY(0px);
+		}
+	}
+
+	.Parts__card:hover .Parts__card-img {
+		animation-duration: 1.5s; /* Прискорення анімації при наведенні */
+		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3)); /* Більша тінь при наведенні */
+	}
+
+	.Parts__card.locked {
+		position: relative;
+		img {
+			width: 120px;
+			height: 120px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			margin: 0;
+		}
+	}
+}
