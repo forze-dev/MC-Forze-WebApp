@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext"
 import HomePage from "./components/pages/home/HomePage"
 import AuthPage from "./components/pages/auth/AuthPage"
 import Profile from "./components/pages/profile/ProfilePage"
+import ShopPage from "./components/pages/shop/ShopPage"
 
 function App() {
 
@@ -20,8 +21,8 @@ function App() {
 					<main>
 						<Routes>
 							<Route path={ROUTES.HOME} element={<HomePage />} />
-							{/* <Route path="/shop" element={<Shop />} />
-							<Route path="/games" element={<Games />} />
+							<Route path="/shop" element={<ShopPage />} />
+							{/*<Route path="/games" element={<Games />} />
 							<Route path="/events" element={<Events />} /> */}
 							<Route path="/authorization" element={<AuthPage />} />
 							<Route
