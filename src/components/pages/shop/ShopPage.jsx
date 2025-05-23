@@ -1,4 +1,4 @@
-import Catalog from "./sections/Catalog/Catalog"
+import Catalog from "./sections/Catalog"
 
 const ShopPage = () => {
 

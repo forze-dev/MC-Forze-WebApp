@@ -1,0 +1,305 @@
+import axios from 'axios';
+import { API_BASE_URL } from '../constants/config';
+
+class ShopService {
+	constructor() {
+		this.baseURL = `${API_BASE_URL}/products`;
+	}
+
+	/**
+	 * Отримати токен з cookies
+	 */
+	getToken() {
+		return document.cookie
+			.split('; ')
+			.find(row => row.startsWith('auth_token='))
+			?.split('=')[1];
+	}
+
+	/**
+	 * Створити headers з токеном (якщо є)
+	 */
+	getHeaders() {
+		const token = this.getToken();
+		return token ? { 'Authorization': `Bearer ${token}` } : {};
+	}
+
+	/**
+	 * Отримати всі товари з фільтрацією
+	 * @param {Object} params - Параметри фільтрації
+	 * @param {string} params.category - Категорія товару
+	 * @param {string} params.product_type - Тип товару
+	 * @param {number} params.limit - Кількість товарів на сторінці
+	 * @param {number} params.offset - Зсув для пагінації
+	 * @returns {Promise<Object>} Список товарів
+	 */
+	async getProducts(params = {}) {
+		try {
+			const response = await axios.get(this.baseURL, {
+				params: {
+					is_active: 1,
+					...params
+				},
+				headers: this.getHeaders()
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error('Помилка отримання товарів:', error);
+			throw new Error('Не вдалося завантажити товари');
+		}
+	}
+
+	/**
+	 * Отримати товар за ID
+	 * @param {number} productId - ID товару
+	 * @returns {Promise<Object>} Товар
+	 */
+	async getProductById(productId) {
+		try {
+			const response = await axios.get(`${this.baseURL}/${productId}`, {
+				headers: this.getHeaders()
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error('Помилка отримання товару:', error);
+			throw new Error('Товар не знайдено');
+		}
+	}
+
+	/**
+	 * Отримати категорії товарів
+	 * @returns {Promise<Object>} Список категорій
+	 */
+	async getCategories() {
+		try {
+			const response = await axios.get(`${this.baseURL}/categories`, {
+				headers: this.getHeaders()
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error('Помилка отримання категорій:', error);
+			throw new Error('Не вдалося завантажити категорії');
+		}
+	}
+
+	/**
+	 * Отримати типи товарів
+	 * @returns {Promise<Object>} Список типів
+	 */
+	async getProductTypes() {
+		try {
+			const response = await axios.get(`${this.baseURL}/types`, {
+				headers: this.getHeaders()
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error('Помилка отримання типів товарів:', error);
+			throw new Error('Не вдалося завантажити типи товарів');
+		}
+	}
+
+	/**
+	 * Купити товар
+	 * @param {Object} purchaseData - Дані про покупку
+	 * @param {number} purchaseData.productId - ID товару
+	 * @param {string} purchaseData.paymentCurrency - Валюта (game/donate)
+	 * @param {number} purchaseData.promocodeId - ID промокоду (опціонально)
+	 * @returns {Promise<Object>} Результат покупки
+	 */
+	async purchaseProduct(purchaseData) {
+		try {
+			const token = this.getToken();
+			if (!token) {
+				throw new Error('Для покупки потрібна авторизація');
+			}
+
+			const response = await axios.post(`${API_BASE_URL}/shop/purchase`, purchaseData, {
+				headers: {
+					'Authorization': `Bearer ${token}`,
+					'Content-Type': 'application/json'
+				}
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error('Помилка покупки:', error);
+			const message = error.response?.data?.message || 'Помилка при покупці товару';
+			throw new Error(message);
+		}
+	}
+
+	/**
+	 * Отримати історію покупок користувача
+	 * @param {Object} params - Параметри пагінації
+	 * @param {number} params.page - Сторінка
+	 * @param {number} params.limit - Кількість на сторінці
+	 * @returns {Promise<Object>} Історія покупок
+	 */
+	async getPurchaseHistory(params = {}) {
+		try {
+			const token = this.getToken();
+			if (!token) {
+				throw new Error('Для перегляду історії потрібна авторизація');
+			}
+
+			const response = await axios.get(`${API_BASE_URL}/shop/purchases/history`, {
+				params,
+				headers: {
+					'Authorization': `Bearer ${token}`
+				}
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error('Помилка отримання історії покупок:', error);
+			throw new Error('Не вдалося завантажити історію покупок');
+		}
+	}
+
+	/**
+	 * Перевірити чи користувач може купити товар
+	 * @param {Object} product - Товар
+	 * @param {Object} userPurchaseHistory - Історія покупок користувача
+	 * @returns {boolean} Чи може користувач купити товар
+	 */
+	canUserPurchaseProduct(product, userPurchaseHistory = []) {
+		// Якщо немає ліміту на покупки
+		if (!product.max_purchases_per_player || product.max_purchases_per_player <= 0) {
+			return true;
+		}
+
+		// Рахуємо скільки разів користувач купляв цей товар
+		const purchaseCount = userPurchaseHistory.filter(
+			purchase => purchase.product?.id === product.id && purchase.status === 'completed'
+		).length;
+
+		return purchaseCount < product.max_purchases_per_player;
+	}
+
+	/**
+	 * Розрахувати фінальну ціну з урахуванням знижки
+	 * @param {number} originalPrice - Оригінальна ціна
+	 * @param {number} discountPercent - Відсоток знижки
+	 * @returns {number} Фінальна ціна
+	 */
+	calculateFinalPrice(originalPrice, discountPercent = 0) {
+		if (!originalPrice || discountPercent <= 0) {
+			return originalPrice;
+		}
+
+		return Math.ceil(originalPrice * (100 - discountPercent) / 100);
+	}
+
+	/**
+	 * Форматувати товар для відображення
+	 * @param {Object} product - Товар
+	 * @param {Object} user - Користувач (якщо авторизований)
+	 * @param {Array} userPurchaseHistory - Історія покупок користувача
+	 * @returns {Object} Відформатований товар
+	 */
+	formatProductForDisplay(product, user = null, userPurchaseHistory = []) {
+		const formattedProduct = {
+			...product,
+			canPurchase: true,
+			discountedPrices: {
+				game: product.game_price,
+				donate: product.donate_price
+			}
+		};
+
+		// Якщо користувач авторизований
+		if (user) {
+			// Перевіряємо чи може користувач купити товар
+			formattedProduct.canPurchase = this.canUserPurchaseProduct(product, userPurchaseHistory);
+
+			// Розраховуємо ціни з знижкою
+			const discountPercent = user.discount_percent || 0;
+
+			if (product.game_price && discountPercent > 0) {
+				formattedProduct.discountedPrices.game = this.calculateFinalPrice(
+					product.game_price,
+					discountPercent
+				);
+			}
+
+			if (product.donate_price && discountPercent > 0) {
+				formattedProduct.discountedPrices.donate = this.calculateFinalPrice(
+					product.donate_price,
+					discountPercent
+				);
+			}
+
+			// Додаємо інформацію про знижку
+			formattedProduct.userDiscount = discountPercent;
+			formattedProduct.hasDiscount = discountPercent > 0;
+		}
+
+		return formattedProduct;
+	}
+
+	/**
+	 * Отримати відформатовані товари з урахуванням користувача
+	 * @param {Object} params - Параметри фільтрації
+	 * @param {Object} user - Користувач (якщо авторизований)
+	 * @returns {Promise<Object>} Відформатовані товари
+	 */
+	async getFormattedProducts(params = {}, user = null) {
+		try {
+			const productsData = await this.getProducts(params);
+			let userPurchaseHistory = [];
+
+			// Якщо користувач авторизований, отримуємо його історію покупок
+			if (user) {
+				try {
+					const historyData = await this.getPurchaseHistory({ limit: 1000 });
+					userPurchaseHistory = historyData.purchases || [];
+				} catch (error) {
+					console.warn('Не вдалося завантажити історію покупок:', error);
+				}
+			}
+
+			// Форматуємо товари
+			const formattedProducts = productsData.products
+				.map(product => this.formatProductForDisplay(product, user, userPurchaseHistory))
+				// Якщо користувач авторизований, фільтруємо товари які він не може купити
+				.filter(product => !user || product.canPurchase);
+
+			return {
+				...productsData,
+				products: formattedProducts
+			};
+		} catch (error) {
+			console.error('Помилка отримання відформатованих товарів:', error);
+			throw error;
+		}
+	}
+
+	/**
+	 * Отримати рекомендовані товари
+	 * @param {Object} user - Користувач
+	 * @param {number} limit - Кількість товарів
+	 * @returns {Promise<Array>} Рекомендовані товари
+	 */
+	async getRecommendedProducts(user = null, limit = 6) {
+		try {
+			const params = {
+				limit,
+				offset: 0
+			};
+
+			const data = await this.getFormattedProducts(params, user);
+			return data.products;
+		} catch (error) {
+			console.error('Помилка отримання рекомендованих товарів:', error);
+			return [];
+		}
+	}
+}
+
+// Створюємо та експортуємо єдиний екземпляр
+const shopService = new ShopService();
+export default shopService;

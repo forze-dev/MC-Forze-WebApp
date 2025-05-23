@@ -1,3 +1,308 @@
 .Catalog {
 	margin: 80px 0;
+
+	.catalog-header {
+		text-align: left;
+		margin-bottom: 40px;
+
+		h1 {
+			font-size: 2rem;
+			color: var(--accent);
+			margin-bottom: 10px;
+		}
+
+		.catalog-subtitle {
+			font-size: 1.1rem;
+			color: rgba(255, 255, 255, 0.8);
+			margin-bottom: 0;
+		}
+	}
+
+	.catalog-layout {
+		display: grid;
+		grid-template-columns: 280px 1fr;
+		gap: 30px;
+		align-items: start;
+	}
+
+	.catalog-sidebar {
+		position: sticky;
+		top: 80px;
+	}
+
+	.catalog-main {
+		min-height: 400px;
+	}
+
+	.catalog-results-info {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+		padding: 15px 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+		span {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 14px;
+		}
+	}
+
+	.catalog-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 25px;
+	}
+
+	.catalog-load-more {
+		text-align: center;
+		margin: 40px 0;
+
+		.load-more-btn {
+			background: rgba(0, 0, 0, 0.3);
+			border: 2px solid var(--accent);
+			color: var(--accent);
+			border-radius: 10px;
+			padding: 15px 30px;
+			font-size: 16px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s ease;
+
+			&:hover:not(:disabled) {
+				background: var(--accent);
+				color: var(--foreaccent);
+				transform: translateY(-2px);
+			}
+
+			&:disabled {
+				opacity: 0.6;
+				cursor: not-allowed;
+				transform: none;
+			}
+		}
+	}
+
+	.catalog-error {
+		text-align: center;
+		padding: 60px 20px;
+		background: rgba(255, 0, 0, 0.1);
+		border: 1px solid rgba(255, 0, 0, 0.3);
+		border-radius: 15px;
+		margin: 40px 0;
+
+		h3 {
+			color: #ff6b6b;
+			margin-bottom: 10px;
+			font-size: 1.5rem;
+		}
+
+		p {
+			color: rgba(255, 255, 255, 0.8);
+			margin-bottom: 20px;
+		}
+
+		.retry-btn {
+			background: #ff6b6b;
+			color: white;
+			border: none;
+			border-radius: 8px;
+			padding: 12px 24px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.2s ease;
+
+			&:hover {
+				background: #ee5a5a;
+				transform: translateY(-2px);
+			}
+		}
+	}
+
+	.catalog-empty {
+		text-align: center;
+		padding: 80px 20px;
+		color: rgba(255, 255, 255, 0.8);
+
+		h3 {
+			font-size: 1.5rem;
+			margin-bottom: 15px;
+			color: var(--foreground);
+		}
+
+		p {
+			margin-bottom: 25px;
+			font-size: 1rem;
+		}
+
+		.clear-filters-btn {
+			background: var(--accent);
+			color: var(--foreaccent);
+			border: none;
+			border-radius: 8px;
+			padding: 12px 24px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.2s ease;
+
+			&:hover {
+				background: rgba(74, 237, 217, 0.9);
+				transform: translateY(-2px);
+			}
+		}
+	}
+
+	.catalog-loading {
+		text-align: center;
+		padding: 60px 20px;
+		color: rgba(255, 255, 255, 0.8);
+
+		.loading-spinner {
+			width: 40px;
+			height: 40px;
+			border: 3px solid rgba(255, 255, 255, 0.3);
+			border-top: 3px solid var(--accent);
+			border-radius: 50%;
+			animation: spin 1s linear infinite;
+			margin: 0 auto 20px;
+		}
+
+		p {
+			font-size: 1rem;
+		}
+	}
+}
+
+// Анімація спінера
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+// Адаптивність для планшетів
+@media (max-width: 1024px) {
+	.Catalog {
+		.catalog-layout {
+			grid-template-columns: 250px 1fr;
+			gap: 20px;
+		}
+
+		.catalog-grid {
+			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+			gap: 20px;
+		}
+
+		.catalog-header h1 {
+			font-size: 2rem;
+		}
+	}
+}
+
+// Адаптивність для мобільних пристроїв
+@media (max-width: 768px) {
+	.Catalog {
+		.catalog-layout {
+			grid-template-columns: 1fr;
+			gap: 0;
+		}
+
+		.catalog-sidebar {
+			position: static;
+			order: -1;
+		}
+
+		.catalog-grid {
+			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+			gap: 20px;
+		}
+
+		.catalog-header {
+			margin-bottom: 20px;
+
+			h1 {
+				font-size: 1.8rem;
+			}
+
+			.catalog-subtitle {
+				font-size: 1rem;
+			}
+		}
+
+		.catalog-results-info {
+			margin-bottom: 15px;
+			padding: 10px 0;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.Catalog {
+		.catalog-grid {
+			grid-template-columns: 1fr;
+			gap: 15px;
+		}
+
+		.catalog-header {
+			h1 {
+				font-size: 1.5rem;
+			}
+
+			.catalog-subtitle {
+				font-size: 0.9rem;
+			}
+		}
+
+		.catalog-load-more .load-more-btn {
+			padding: 12px 24px;
+			font-size: 14px;
+		}
+
+		.catalog-empty {
+			padding: 40px 15px;
+
+			h3 {
+				font-size: 1.3rem;
+			}
+		}
+	}
+}
+
+// Стилі для анімації появи карточок
+.catalog-grid .product-card {
+	animation: fadeInUp 0.5s ease forwards;
+	opacity: 0;
+	transform: translateY(20px);
+}
+
+.catalog-grid .product-card:nth-child(1) {
+	animation-delay: 0.1s;
+}
+.catalog-grid .product-card:nth-child(2) {
+	animation-delay: 0.2s;
+}
+.catalog-grid .product-card:nth-child(3) {
+	animation-delay: 0.3s;
+}
+.catalog-grid .product-card:nth-child(4) {
+	animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+// Плавний перехід при зміні контенту
+.catalog-main {
+	transition: opacity 0.3s ease;
+}
+
+.catalog-main.loading {
+	opacity: 0.7;
 }
