@@ -1,13 +1,25 @@
+// src/components/pages/shop/components/ProductCard.jsx
+// Компонент карточки товару з підтримкою промокодів
+// Оновлена версія з полем для введення промокоду та застосуванням знижок
+
 import { useState } from 'react';
 import { useAuth } from '../../../../contexts/AuthContext';
 import shopService from '../../../../services/shop.service';
+import promocodesService from '../../../../services/promocodes.service';
 import { API_BASE_URL } from '../../../../constants/config';
+import '../styles/promocode-styles.scss';
 import '../styles/product-card.scss';
 
 const ProductCard = ({ product, onPurchaseSuccess }) => {
 	const { user, isAuthenticated, refreshUserData } = useAuth();
 	const [isLoading, setIsLoading] = useState(false);
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+
+	// Стан для промокодів
+	const [promocodeInput, setPromocodeInput] = useState('');
+	const [appliedPromocode, setAppliedPromocode] = useState(null);
+	const [promocodeLoading, setPromocodeLoading] = useState(false);
+	const [promocodeError, setPromocodeError] = useState('');
 
 	// Отримуємо першу доступну ціну для відображення
 	const getDisplayPrice = () => {
@@ -30,25 +42,73 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 		return null;
 	};
 
-	// Обробка покупки
+	// Розрахунок ціни з урахуванням промокоду
+	const calculatePriceWithPromocode = (originalPrice, userDiscount = 0, promocodeDiscount = 0) => {
+		// Застосовуємо найбільшу знижку
+		const maxDiscount = Math.max(userDiscount, promocodeDiscount);
+		return Math.ceil(originalPrice * (100 - maxDiscount) / 100);
+	};
+
+	// Застосування промокоду
+	const handleApplyPromocode = async () => {
+		if (!promocodeInput.trim()) {
+			setPromocodeError('Введіть промокод');
+			return;
+		}
+
+		setPromocodeLoading(true);
+		setPromocodeError('');
+
+		try {
+			const result = await promocodesService.validatePromocode(
+				promocodeInput.trim(),
+				product.id
+			);
+
+			if (result.valid) {
+				setAppliedPromocode(result.promocode);
+				setPromocodeError('');
+			}
+		} catch (error) {
+			setPromocodeError(error.message);
+			setAppliedPromocode(null);
+		} finally {
+			setPromocodeLoading(false);
+		}
+	};
+
+	// Скидання промокоду
+	const handleRemovePromocode = () => {
+		setAppliedPromocode(null);
+		setPromocodeInput('');
+		setPromocodeError('');
+	};
+
+	// Обробка покупки з промокодом
 	const handlePurchase = async (paymentCurrency) => {
 		if (!isAuthenticated) {
-			// Перенаправляємо на сторінку авторизації
 			window.location.href = '/authorization';
 			return;
 		}
 
 		setIsLoading(true);
 		try {
-			const result = await shopService.purchaseProduct({
+			const purchaseData = {
 				productId: product.id,
 				paymentCurrency
-			});
+			};
+
+			// Додаємо промокод якщо застосований
+			if (appliedPromocode) {
+				purchaseData.promocodeId = appliedPromocode.id;
+			}
+
+			const result = await shopService.purchaseProduct(purchaseData);
 
 			alert(`Покупка успішна! ${result.execution.message || ''}`);
 
-			// Показуємо повідомлення про успішну покупку
-			await refreshUserData()
+			// Оновлюємо дані користувача
+			await refreshUserData();
 
 			// Викликаємо callback для оновлення списку
 			if (onPurchaseSuccess) {
@@ -56,6 +116,9 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 			}
 
 			setShowPurchaseModal(false);
+
+			// Очищаємо промокод після успішної покупки
+			handleRemovePromocode();
 		} catch (error) {
 			alert(`Помилка покупки: ${error.message}`);
 		} finally {
@@ -63,10 +126,18 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 		}
 	};
 
+	// Отримуємо ціни з урахуванням промокоду
+	const getPriceWithPromocode = (originalPrice, currency) => {
+		const userDiscount = product.userDiscount || 0;
+		const promocodeDiscount = appliedPromocode?.discount_percent || 0;
+
+		return calculatePriceWithPromocode(originalPrice, userDiscount, promocodeDiscount);
+	};
+
 	const displayPrice = getDisplayPrice();
 
 	if (!displayPrice) {
-		return null; // Не показуємо товар без ціни
+		return null;
 	}
 
 	return (
@@ -75,8 +146,7 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 				<div className="product-card__image">
 					{product.images && product.images.length > 0 ? (
 						<img
-							// src={API_BASE_URL + product.images[0]}
-							src={"/test.png"}
+							src={API_BASE_URL + product.images[0]}
 							alt={product.name}
 							onError={(e) => {
 								e.target.src = '/assets/images/placeholder-product.png';
@@ -140,7 +210,7 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 				</div>
 			</div>
 
-			{/* Модальне вікно покупки */}
+			{/* Модальне вікно покупки з промокодами */}
 			{showPurchaseModal && (
 				<div className="purchase-modal-overlay" onClick={() => setShowPurchaseModal(false)}>
 					<div className="purchase-modal" onClick={(e) => e.stopPropagation()}>
@@ -155,7 +225,50 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 						</div>
 
 						<div className="purchase-modal__content">
-							<p>Оберіть валюту для оплати:</p>
+							{/* Поле для промокоду */}
+							<div className="promocode-section">
+								<h4>Промокод</h4>
+								{!appliedPromocode ? (
+									<div className="promocode-input-group">
+										<input
+											type="text"
+											placeholder="Введіть промокод"
+											value={promocodeInput}
+											onChange={(e) => setPromocodeInput(e.target.value.toUpperCase())}
+											disabled={promocodeLoading}
+											className="promocode-input"
+										/>
+										<button
+											className="promocode-apply-btn"
+											onClick={handleApplyPromocode}
+											disabled={promocodeLoading || !promocodeInput.trim()}
+										>
+											{promocodeLoading ? 'Перевірка...' : 'Застосувати'}
+										</button>
+									</div>
+								) : (
+									<div className="promocode-applied">
+										<div className="promocode-success">
+											Промокод "{appliedPromocode.code}" застосовано!
+											Знижка: {appliedPromocode.discount_percent}%
+										</div>
+										<button
+											className="promocode-remove-btn"
+											onClick={handleRemovePromocode}
+										>
+											Видалити
+										</button>
+									</div>
+								)}
+
+								{promocodeError && (
+									<div className="promocode-error">
+										❌ {promocodeError}
+									</div>
+								)}
+							</div>
+
+							<p>Оберіть валюту для миттєвої оплати:</p>
 
 							<div className="purchase-modal__options">
 								{product.game_price && (
@@ -165,8 +278,8 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 										disabled={isLoading}
 									>
 										<div className="purchase-option__price">
-											{product.discountedPrices.game} GFC
-											{product.hasDiscount && product.game_price !== product.discountedPrices.game && (
+											{getPriceWithPromocode(product.game_price, 'game')} GFC
+											{(product.hasDiscount || appliedPromocode) && (
 												<span className="original-price">{product.game_price} GFC</span>
 											)}
 										</div>
@@ -186,8 +299,8 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 										disabled={isLoading}
 									>
 										<div className="purchase-option__price">
-											{product.discountedPrices.donate} DFC
-											{product.hasDiscount && product.donate_price !== product.discountedPrices.donate && (
+											{getPriceWithPromocode(product.donate_price, 'donate')} DFC
+											{(product.hasDiscount || appliedPromocode) && (
 												<span className="original-price">{product.donate_price} DFC</span>
 											)}
 										</div>
