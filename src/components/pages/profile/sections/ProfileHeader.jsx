@@ -23,8 +23,8 @@ function ProfileHeader({ user }) {
 					<div className="profile-info-content">
 						<div className="profile-info-top">
 							<h1 className="profile-name">
-								{(user.minecraftNick || user.minecraft_nick)?.length > 16
-									? `${(user.minecraftNick || user.minecraft_nick).slice(0, 16)}...`
+								{(user.minecraftNick || user.minecraft_nick)?.length > 15
+									? `${(user.minecraftNick || user.minecraft_nick).slice(0, 13)}...`
 									: (user.minecraftNick || user.minecraft_nick)
 								}
 							</h1>

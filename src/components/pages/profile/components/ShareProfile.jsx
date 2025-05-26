@@ -147,8 +147,8 @@ const ProfileShareGenerator = ({ user }) => {
 
 								<div className="share-info">
 
-									<div className="share-name">{(user.minecraftNick || user.minecraft_nick)?.length > 16
-										? `${(user.minecraftNick || user.minecraft_nick).slice(0, 16)}...`
+									<div className="share-name">{(user.minecraftNick || user.minecraft_nick)?.length > 15
+										? `${(user.minecraftNick || user.minecraft_nick).slice(0, 13)}...`
 										: (user.minecraftNick || user.minecraft_nick)
 									}</div>
 									<div className="share-role">
