@@ -1,5 +1,4 @@
 // src/pages/profile/sections/ProfileGameStats.jsx
-import "../styles/ProfileGameStats.scss";
 
 function ProfileGameStats({ user }) {
 	// Розрахунок рівнів активності (приклад логіки)

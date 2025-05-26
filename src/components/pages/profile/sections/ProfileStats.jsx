@@ -1,5 +1,4 @@
 // src/pages/profile/sections/ProfileStats.jsx
-import "../styles/ProfileStats.scss";
 
 function ProfileStats({ user }) {
 	const formatPlaytime = (hours) => {

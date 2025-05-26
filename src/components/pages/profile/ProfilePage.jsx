@@ -6,6 +6,11 @@ import ProfileBalance from "./sections/ProfileBalance";
 import ProfileGameStats from "./sections/ProfileGameStats";
 import ShareProfile from "./components/ShareProfile";
 import "./styles/ProfilePage.scss"
+import "./styles/ProfileHeader.scss";
+import "./styles/ProfileBalance.scss";
+import "./styles/ProfileGameStats.scss";
+import "./styles/ProfileStats.scss";
+
 
 function ProfilePage() {
 	const { user } = useAuth();

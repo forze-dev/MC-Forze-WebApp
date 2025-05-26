@@ -1,5 +1,4 @@
 // src/pages/profile/sections/ProfileBalance.jsx
-import "../styles/ProfileBalance.scss";
 
 function ProfileBalance({ user }) {
 	return (

@@ -1,5 +1,4 @@
 // src/pages/profile/sections/ProfileHeader.jsx
-import "../styles/ProfileHeader.scss";
 import { useAuth } from "../../../../contexts/AuthContext";
 
 function ProfileHeader({ user }) {

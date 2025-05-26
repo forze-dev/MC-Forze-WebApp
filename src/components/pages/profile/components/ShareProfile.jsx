@@ -1,9 +1,7 @@
 import { useState, useRef } from 'react';
 import { Download, Send } from 'lucide-react';
 import html2canvas from 'html2canvas';
-import ProfileBalance from '../sections/ProfileBalance';
-import ProfileStats from '../sections/ProfileStats';
-import ProfileGameStats from '../sections/ProfileGameStats';
+import "../styles/ShareProfile.scss"
 
 const ProfileShareGenerator = ({ user }) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +31,7 @@ const ProfileShareGenerator = ({ user }) => {
 				backgroundColor: '#022722',
 				scale: 1.5, // Для кращої якості
 				width: 1024,
-				height: 1868,
+				height: 1854,
 				useCORS: true,
 				allowTaint: true,
 				scrollX: 0,
@@ -88,7 +86,7 @@ const ProfileShareGenerator = ({ user }) => {
 					});
 				} else {
 					// Відкриваємо Telegram Web
-					const statsText = `🎮 Мій профіль на Forze Space!\n\n💰 GFC: ${user.game_balance?.toLocaleString() || 0}\n💎 DFC: ${user.donate_balance?.toLocaleString() || 0}${user.discount_percent ? `\n🏷️ Знижка: ${user.discount_percent}%` : ''}\n\n⚡ Приєднуйся: mine.forze.space`;
+					const statsText = `🎮 Мій профіль на Forze World!\n\n⚡ Приєднуйся: mine.forze.space`;
 
 					window.open(`https://t.me/share/url?url=https://forze.space&text=${encodeURIComponent(statsText)}`);
 				}
@@ -101,7 +99,7 @@ const ProfileShareGenerator = ({ user }) => {
 	};
 
 	return (
-		<div className="profile-share-container">
+		<div className="profile-share-container ShareProfile">
 			{/* Кнопки управління */}
 			<div className="container">
 				<div className="share-controls">
@@ -131,420 +129,275 @@ const ProfileShareGenerator = ({ user }) => {
 				className={`profile-share-capture ${isGenerating ? 'generating' : ''}`}
 			>
 				<div className="share-wrapper">
-					{/* Хедер профілю */}
-					<div className="share-header-section">
-						<div className="profile-header">
-							<div className="profile-header__content">
-								<div className="profile-avatar">
-									<div className="avatar-ring">
-										<img
-											src={`https://mc-heads.net/avatar/${user.minecraftNick || user.minecraft_nick}/240`}
-											alt="Avatar"
-											className="avatar-image"
-										/>
-									</div>
-									<div className="avatar-status online"></div>
+					<div className="share-card-container">
+						{/* Хедер профілю */}
+						<div className="share-header">
+							<div className="share-avatar">
+								<div className="share-avatar-ring">
+									<img
+										src={`https://mc-heads.net/avatar/${user.minecraftNick || user.minecraft_nick}/160`}
+										alt="Avatar"
+										className="share-avatar-image"
+									/>
 								</div>
+								<div className="share-avatar-status-online"></div>
+							</div>
 
-								<div className="profile-info">
-									<div className="profile-info-content">
-										<div className="profile-info-top">
-											<h1 className="profile-name">{user.minecraftNick || user.minecraft_nick}</h1>
-											<div className="profile-role">
-												<span className="role-badge">{user.role || "Гравець"}</span>
-											</div>
-										</div>
-										<div className="profile-meta">
-											<div className="meta-item">
-												<span className="meta-icon">📅</span>
-												<span>Зареєстрований {new Date(user.registered_at * 1000).toLocaleDateString()}</span>
-											</div>
-											<div className="meta-item">
-												<span className="meta-icon">💬</span>
-												<span>Повідомлень сьогодні: <strong>{user.messages_count}</strong></span>
-											</div>
-										</div>
+							<div className="share-info">
+								<div className="share-name">{user.minecraftNick || user.minecraft_nick}</div>
+								<div className="share-role">
+									<span className="share-role-badge">{user.role || "Гравець"}</span>
+								</div>
+								<div className="share-meta">
+									<div className="share-meta-item">
+										<span className="share-meta-icon">📅</span>
+										<span className="share-meta-text">Зареєстрований {new Date(user.registered_at * 1000).toLocaleDateString()}</span>
+									</div>
+									<div className="share-meta-item">
+										<span className="share-meta-icon">💬</span>
+										<span className="share-meta-text">Повідомлень сьогодні: <strong>{user.messages_count}</strong></span>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					{/* Блок 1: Баланс та Статистика */}
-					<div className="share-game-stats-row">
-						<ProfileBalance user={user} />
-					</div>
-					<div className="share-game-stats-row">
-						<ProfileGameStats user={user} />
-					</div>
-
-					{/* Блок 2: Ігрова статистика (якщо є) */}
-					{user.plan_data_available && (
-						<div className="share-game-stats-row">
-							<ProfileStats user={user} />
-						</div>
-					)}
-
-					{/* Блок 3: Футер з логотипом */}
-					<div className="share-footer">
-						<div className="footer-content">
-							<div className="server-info">
-								<span className="server-name">Forze World</span>
-								<span className="server-ip">mine.forze.space</span>
+						{/* Секція балансу */}
+						<div className="share-balance-section">
+							<div className="share-section-header">
+								<span className="share-section-icon">💰</span>
+								<span className="share-section-title">Баланс</span>
 							</div>
-							<div className="footer-text">
-								🏆 Найкращий Minecraft сервер!
+
+							<div className="share-balance-items">
+								{/* Ігрова валюта */}
+								<div className="share-balance-item share-game-balance">
+									<div className="share-balance-info">
+										<span className="share-balance-label">Ігрова валюта</span>
+										<span className="share-balance-value">{(user.game_balance || 0).toLocaleString()}</span>
+									</div>
+									<div className="share-balance-icon-wrapper">
+										<span className="share-balance-currency-icon">
+											<img src="/public/assets/icons/GFC.svg" alt="GFC" width={64} height={64} />
+										</span>
+									</div>
+								</div>
+
+								{/* Донат баланс */}
+								<div className="share-balance-item share-donate-balance">
+									<div className="share-balance-info">
+										<span className="share-balance-label">Донат баланс</span>
+										<span className="share-balance-value">{(user.donate_balance || 0).toLocaleString()}</span>
+									</div>
+									<div className="share-balance-icon-wrapper">
+										<span className="share-balance-currency-icon">
+											<img src="/public/assets/icons/DFC.svg" alt="DFC" width={64} height={64} />
+										</span>
+									</div>
+								</div>
+							</div>
+
+							{/* Персональна знижка */}
+							{user.discount_percent > 0 && (
+								<div className="share-discount-section">
+									<div className="share-discount-header">
+										<span className="share-discount-icon">🏷️</span>
+										<span className="share-discount-label">Персональна знижка</span>
+									</div>
+									<div className="share-discount-progress">
+										<div className="share-progress-bar">
+											<div
+												className="share-progress-fill"
+												style={{ width: `${(user.discount_percent / 40) * 100}%` }}
+											></div>
+										</div>
+										<div className="share-progress-text">
+											<span className="share-current-discount">{user.discount_percent}%</span>
+											<span className="share-max-discount">/ 40%</span>
+										</div>
+									</div>
+								</div>
+							)}
+						</div>
+
+						{/* Ігрова статистика */}
+						{user.plan_data_available && (
+							<div className="share-game-stats-section">
+								<div className="share-section-header">
+									<span className="share-section-icon">🎯</span>
+									<span className="share-section-title">Ігрова статистика</span>
+								</div>
+
+								{/* Рівень активності */}
+								<div className="share-activity-level">
+									<div className="share-activity-header">
+										<span className="share-activity-label">Рівень активності</span>
+										<span className="share-activity-badge">
+											{user.total_sessions >= 400 ? "Легендарний" :
+												user.total_sessions >= 200 ? "Експерт" :
+													user.total_sessions >= 80 ? "Досвідчений" :
+														user.total_sessions >= 20 ? "Новачок" : "Початківець"}
+										</span>
+									</div>
+									<div className="share-activity-progress">
+										<div className="share-progress-bar">
+											<div
+												className="share-progress-fill share-activity-progress-fill"
+												style={{
+													width: `${Math.min(
+														user.total_sessions >= 400 ? 100 :
+															user.total_sessions >= 200 ? (user.total_sessions / 400) * 100 :
+																user.total_sessions >= 80 ? (user.total_sessions / 200) * 100 :
+																	user.total_sessions >= 20 ? (user.total_sessions / 80) * 100 :
+																		(user.total_sessions / 20) * 100, 100
+													)}%`
+												}}
+											></div>
+										</div>
+										<span className="share-progress-percentage">
+											{Math.round(
+												user.total_sessions >= 400 ? 100 :
+													user.total_sessions >= 200 ? (user.total_sessions / 400) * 100 :
+														user.total_sessions >= 80 ? (user.total_sessions / 200) * 100 :
+															user.total_sessions >= 20 ? (user.total_sessions / 80) * 100 :
+																(user.total_sessions / 20) * 100
+											)}%
+										</span>
+									</div>
+								</div>
+
+								<div className="share-second-wrapper">
+									{/* K/D Ratio */}
+									<div className="share-kd-ratio">
+										<div className="share-stat-header">
+											<span className="share-stat-icon">⚔️</span>
+											<span className="share-stat-label">Kill/Death Ratio</span>
+										</div>
+										<div className="share-stat-value-container">
+											<span className="share-stat-number">{user.kd_ratio || '0.00'}</span>
+											<span className="share-stat-breakdown">({user.total_mob_kills || 0} / {user.total_deaths || 0})</span>
+										</div>
+									</div>
+
+									{/* Середня сесія */}
+									<div className="share-session-average">
+										<div className="share-stat-header">
+											<span className="share-stat-icon">⏱️</span>
+											<span className="share-stat-label">Середня сесія</span>
+										</div>
+										<div className="share-stat-value">
+											{user.total_sessions > 0
+												? `${((user.total_playtime_hours || 0) / user.total_sessions).toFixed(1)} год`
+												: '0.5 год'
+											}
+										</div>
+									</div>
+
+									{/* Статус гравця */}
+									<div className="share-player-status">
+										<div className="share-stat-header">
+											<span className="share-stat-icon">📈</span>
+											<span className="share-stat-label">Статус гравця</span>
+										</div>
+										<div className="share-stat-value">
+											{user.total_playtime_hours > 200 ? "Хардкорний гравець" :
+												user.total_playtime_hours > 100 ? "Активний гравець" :
+													user.total_playtime_hours > 20 ? "Регулярний гравець" : "Новий гравець"}
+										</div>
+									</div>
+								</div>
+							</div>
+						)}
+
+						{/* Основна статистика */}
+						{user.plan_data_available && (
+							<div className="share-main-stats-section">
+								<div className="share-section-header">
+									<span className="share-section-icon">📊</span>
+									<span className="share-section-title">Статистика</span>
+								</div>
+
+								<div className="share-stats-grid">
+									{/* Час гри */}
+									<div className="share-stat-item share-playtime-stat">
+										<div className="share-stat-icon-wrapper">
+											<span className="share-stat-emoji">🎮</span>
+										</div>
+										<div className="share-stat-content">
+											<span className="share-stat-value">
+												{user.total_playtime_hours
+													? user.total_playtime_hours < 1
+														? `${Math.round(user.total_playtime_hours * 60)} хв`
+														: user.total_playtime_hours < 24
+															? `${user.total_playtime_hours.toFixed(1)} год`
+															: `${Math.floor(user.total_playtime_hours / 24)} дн`
+													: "7.4 год"
+												}
+											</span>
+											<span className="share-stat-label">Загальний час гри</span>
+										</div>
+									</div>
+
+									{/* Кількість сесій */}
+									<div className="share-stat-item share-sessions-stat">
+										<div className="share-stat-icon-wrapper">
+											<span className="share-stat-emoji">🔄</span>
+										</div>
+										<div className="share-stat-content">
+											<span className="share-stat-value">{user.total_sessions || 15}</span>
+											<span className="share-stat-label">Кількість сесій</span>
+										</div>
+									</div>
+
+									{/* Вбивства мобів */}
+									<div className="share-stat-item share-kills-stat">
+										<div className="share-stat-icon-wrapper">
+											<span className="share-stat-emoji">⚔️</span>
+										</div>
+										<div className="share-stat-content">
+											<span className="share-stat-value">{user.total_mob_kills || 0}</span>
+											<span className="share-stat-label">Вбивств мобів</span>
+										</div>
+									</div>
+
+									{/* Смерті */}
+									<div className="share-stat-item share-deaths-stat">
+										<div className="share-stat-icon-wrapper">
+											<span className="share-stat-emoji">💀</span>
+										</div>
+										<div className="share-stat-content">
+											<span className="share-stat-value">{user.total_deaths || 2}</span>
+											<span className="share-stat-label">Смертей</span>
+										</div>
+									</div>
+
+									{/* Улюблений світ */}
+									<div className="share-stat-item share-world-stat">
+										<div className="share-stat-icon-wrapper">
+											<span className="share-stat-emoji">🌍</span>
+										</div>
+										<div className="share-stat-content">
+											<span className="share-stat-value">{user.most_played_world || "Spawn"}</span>
+											<span className="share-stat-label">Улюблений світ</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						)}
+
+						{/* Футер */}
+						<div className="share-footer">
+							<div className="share-server-info">
+								<div className="share-server-name">Forze World</div>
+								<div className="share-server-ip">mine.forze.space</div>
+							</div>
+							<div className="share-server-slogan">
+								<span className="share-trophy-icon">🏆</span>
+								<span className="share-slogan-text">Найкращий Minecraft сервер!</span>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<style jsx>{`
-				.profile-share-container {
-					margin: 20px 0;
-				}
-
-				.share-controls {
-					display: flex;
-					gap: 12px;
-					justify-content: center;
-					margin-bottom: 20px;
-				}
-
-				.share-btn {
-					display: flex;
-					align-items: center;
-					gap: 8px;
-					padding: 12px 24px;
-					border: none;
-					border-radius: 12px;
-					font-weight: 600;
-					cursor: pointer;
-					transition: all 0.3s ease;
-					font-size: 14px;
-				}
-
-				.download-btn {
-					background: linear-gradient(135deg, #4aedd9, rgba(74, 237, 217, 0.8));
-					color: #012722;
-					margin-bottom: 10px;
-				}
-
-				.telegram-btn {
-					background: linear-gradient(135deg, #0088cc, #005fa3);
-					color: white;
-					margin-bottom: 10px;
-				}
-
-				.share-btn:hover:not(:disabled) {
-					transform: translateY(-2px);
-					box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-				}
-
-				.share-btn:disabled {
-					opacity: 0.7;
-					cursor: not-allowed;
-					transform: none;
-				}
-
-				/* 📐 Контейнер 1920x2560 */
-				.profile-share-capture {
-					position: absolute;
-					top: -9999px;
-					left: -9999px;
-					width: 1024px;
-					height: 1868px;
-					z-index: -1;
-					transform: scale(0.1);
-					transform-origin: top left;
-				}
-
-				.profile-share-capture.generating {
-					position: fixed;
-					top: 0;
-					left: 0;
-					z-index: 9999;
-					transform: scale(1);
-				}
-
-				.share-wrapper {
-					width: 100%;
-					height: 100%;
-					background: linear-gradient(45deg, #022722, #145e53);
-					padding: 50px;
-					box-sizing: border-box;
-					display: flex;
-					flex-direction: column;
-					gap: 40px;
-				}
-
-				/* 🎯 Хедер профілю */
-				.share-header-section {
-					flex-shrink: 0;
-				}
-
-				.share-header-section .profile-header {
-					padding: 30px 0;
-				}
-
-				.share-header-section .profile-header__content {
-					gap: 50px;
-					justify-content: flex-start;
-				}
-
-				.share-header-section .profile-avatar .avatar-ring {
-					width: 200px;
-					height: 200px;
-					padding: 6px;
-				}
-
-				.share-header-section .avatar-status {
-					width: 30px;
-					height: 30px;
-					border-width: 4px;
-					bottom: 10px;
-					right: 15px;
-				}
-
-				.share-header-section .profile-name {
-					font-size: 4rem;
-					margin-bottom: 1.5rem;
-					background: none !important;
-					-webkit-background-clip: unset !important;
-					-webkit-text-fill-color: unset !important;
-					background-clip: unset !important;
-					color: #ffffff !important;
-				}
-
-				.share-header-section .role-badge {
-					padding: 0.8rem 1.6rem;
-					font-size: 1.4rem;
-					border-radius: 30px;
-				}
-
-				.share-header-section .meta-item {
-					font-size: 1.6rem;
-					gap: 0.8rem;
-				}
-
-				.share-header-section .meta-icon {
-					font-size: 1.4rem;
-				}
-
-				/* 📊 Блок 1: Баланс + Статистика */
-				.share-content-row {
-					display: grid;
-					grid-template-columns: 1fr 1fr;
-					gap: 40px;
-					flex-shrink: 0;
-				}
-
-				.share-balance-column,
-				.share-stats-column {
-					display: flex;
-					flex-direction: column;
-				}
-
-				/* 🎮 Блок 2: Ігрова статистика */
-				.share-game-stats-row {
-					flex-shrink: 0;
-				}
-
-				/* 📋 Карточки - збільшені розміри */
-				.share-wrapper :global(.profile-card) {
-					padding: 35px;
-					font-size: 1.5em;
-					border-radius: 20px;
-					border-width: 2px;
-				}
-
-				.share-wrapper :global(.card-title) {
-					font-size: 2.2rem;
-					gap: 0.8rem;
-					margin-bottom: 2rem;
-				}
-
-				.share-wrapper :global(.card-icon) {
-					font-size: 2rem;
-				}
-
-				/* 💰 Баланс */
-				.share-wrapper :global(.balance-content) {
-					gap: 1.5rem;
-				}
-
-				.share-wrapper :global(.balance-item) {
-					padding: 1.8rem;
-					border-radius: 15px;
-					border-left-width: 6px;
-				}
-
-				.share-wrapper :global(.balance-label) {
-					font-size: 1.3rem;
-				}
-
-				.share-wrapper :global(.balance-value) {
-					font-size: 2.8rem;
-				}
-
-				.share-wrapper :global(.balance-icon) {
-					height: 50px;
-				}
-
-				.share-wrapper :global(.balance-icon img) {
-					width: 50px;
-					height: 50px;
-				}
-
-				/* 📊 Статистика */
-				.share-wrapper :global(.stats-grid) {
-					gap: 1.5rem;
-					margin-bottom: 1.5rem;
-				}
-
-				.share-wrapper :global(.stat-item) {
-					gap: 1.2rem;
-					padding: 1.8rem;
-					border-radius: 15px;
-					border-width: 2px;
-					border-left-width: 4px;
-				}
-
-				.share-wrapper :global(.stat-icon) {
-					font-size: 2.2rem;
-				}
-
-				.share-wrapper :global(.stat-value) {
-					font-size: 2rem;
-				}
-
-				.share-wrapper :global(.stat-label) {
-					font-size: 1.4rem;
-				}
-
-				/* 🎯 Ігрова статистика */
-				.share-wrapper :global(.activity-header) {
-					margin-bottom: 0.8rem;
-				}
-
-				.share-wrapper :global(.activity-badge) {
-					padding: 0.8rem 1.6rem;
-					border-radius: 25px;
-					font-size: 1.2rem;
-				}
-
-				.share-wrapper :global(.progress-bar) {
-					height: 12px;
-					border-radius: 6px;
-				}
-
-				.share-wrapper :global(.progress-percentage) {
-					font-size: 1.4rem;
-					min-width: 60px;
-				}
-
-				.share-wrapper :global(.kd-ratio),
-				.share-wrapper :global(.session-average) {
-					padding: 1.8rem;
-					border-radius: 15px;
-					border-width: 2px;
-					margin-bottom: 1.5rem;
-				}
-
-				.share-wrapper :global(.ratio-header),
-				.share-wrapper :global(.session-header) {
-					gap: 0.8rem;
-					margin-bottom: 0.8rem;
-				}
-
-				.share-wrapper :global(.ratio-icon),
-				.share-wrapper :global(.session-icon) {
-					font-size: 1.8rem;
-				}
-
-				.share-wrapper :global(.ratio-label),
-				.share-wrapper :global(.session-label) {
-					font-size: 1.4rem;
-				}
-
-				.share-wrapper :global(.ratio-number),
-				.share-wrapper :global(.session-value) {
-					font-size: 2rem;
-				}
-
-				.share-wrapper :global(.ratio-breakdown) {
-					font-size: 1.4rem;
-				}
-
-				/* 🏷️ Знижка */
-				.share-wrapper :global(.discount-section) {
-					padding: 1.8rem;
-					border-radius: 15px;
-					border-width: 2px;
-				}
-
-				.share-wrapper :global(.discount-progress) {
-					gap: 1.2rem;
-				}
-
-				.share-wrapper :global(.current-discount) {
-					font-size: 1.8rem;
-				}
-
-				.share-wrapper :global(.max-discount) {
-					font-size: 1.4rem;
-				}
-
-				/* 🏆 Футер */
-				.share-footer {
-					border-top: 3px solid rgba(74, 237, 217, 0.3);
-					padding-top: 30px;
-					margin-top: auto;
-					flex-shrink: 0;
-				}
-
-				.footer-content {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-				}
-
-				.server-info {
-					display: flex;
-					flex-direction: column;
-					gap: 8px;
-				}
-
-				.server-name {
-					font-size: 2.6rem;
-					font-weight: 700;
-					color: #4aedd9;
-				}
-
-				.server-ip {
-					font-size: 2rem;
-					color: rgba(255, 255, 255, 0.8);
-				}
-
-				.footer-text {
-					font-size: 1.8rem;
-					font-weight: 600;
-					color: #FBFF00;
-				}
-
-				@media (max-width: 768px) {
-					.share-controls {
-						flex-direction: column;
-						gap: 8px;
-					}
-					
-					.share-btn {
-						width: 100%;
-						justify-content: center;
-					}
-				}
-			`}</style>
 		</div>
 	);
 };
