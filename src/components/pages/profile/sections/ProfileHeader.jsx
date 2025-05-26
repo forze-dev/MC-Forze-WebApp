@@ -22,7 +22,12 @@ function ProfileHeader({ user }) {
 				<div className="profile-info">
 					<div className="profile-info-content">
 						<div className="profile-info-top">
-							<h1 className="profile-name">{user.minecraftNick || user.minecraft_nick}</h1>
+							<h1 className="profile-name">
+								{(user.minecraftNick || user.minecraft_nick)?.length > 16
+									? `${(user.minecraftNick || user.minecraft_nick).slice(0, 16)}...`
+									: (user.minecraftNick || user.minecraft_nick)
+								}
+							</h1>
 							<div className="profile-role">
 								<span className="role-badge">{user.role || "Гравець"}</span>
 							</div>
