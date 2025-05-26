@@ -3,11 +3,10 @@
 .profile-page {
 	min-height: 100vh;
 	min-height: 100dvh;
-	margin: 40px 0;
+	margin: 60px 0;
 	color: var(--foreground);
 
 	.profile-content {
-		padding: 2rem 0 4rem;
 		position: relative;
 		z-index: 2;
 	}

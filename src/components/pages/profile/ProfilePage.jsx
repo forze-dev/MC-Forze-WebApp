@@ -4,6 +4,7 @@ import ProfileHeader from "./sections/ProfileHeader";
 import ProfileStats from "./sections/ProfileStats";
 import ProfileBalance from "./sections/ProfileBalance";
 import ProfileGameStats from "./sections/ProfileGameStats";
+import ShareProfile from "./components/ShareProfile";
 import "./styles/ProfilePage.scss"
 
 function ProfilePage() {
@@ -31,6 +32,7 @@ function ProfilePage() {
 						</div>
 					</div>
 				</div>
+				<ShareProfile user={user} />
 			</section>
 		</main>
 	);
