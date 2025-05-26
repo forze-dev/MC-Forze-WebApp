@@ -1,4 +1,9 @@
 .ShareProfile {
+	.ShareProfile-box {
+		overflow: hidden;
+		height: 0;
+		width: 0;
+	}
 	/* ========== ОСНОВНИЙ КОНТЕЙНЕР ========== */
 	.share-card-container {
 		width: 1024px;
