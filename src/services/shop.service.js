@@ -26,12 +26,7 @@ class ShopService {
 
 	/**
 	 * Отримати всі товари з фільтрацією
-	 * @param {Object} params - Параметри фільтрації
-	 * @param {string} params.category - Категорія товару
-	 * @param {string} params.product_type - Тип товару
-	 * @param {number} params.limit - Кількість товарів на сторінці
-	 * @param {number} params.offset - Зсув для пагінації
-	 * @returns {Promise<Object>} Список товарів
+	 * ПУБЛІЧНИЙ МЕТОД - не потребує авторизації
 	 */
 	async getProducts(params = {}) {
 		try {
@@ -39,8 +34,8 @@ class ShopService {
 				params: {
 					is_active: 1,
 					...params
-				},
-				headers: this.getHeaders()
+				}
+				// Не додаємо headers для публічного API
 			});
 
 			return response.data;
@@ -52,15 +47,11 @@ class ShopService {
 
 	/**
 	 * Отримати товар за ID
-	 * @param {number} productId - ID товару
-	 * @returns {Promise<Object>} Товар
+	 * ПУБЛІЧНИЙ МЕТОД - не потребує авторизації
 	 */
 	async getProductById(productId) {
 		try {
-			const response = await axios.get(`${this.baseURL}/${productId}`, {
-				headers: this.getHeaders()
-			});
-
+			const response = await axios.get(`${this.baseURL}/${productId}`);
 			return response.data;
 		} catch (error) {
 			console.error('Помилка отримання товару:', error);
@@ -70,14 +61,11 @@ class ShopService {
 
 	/**
 	 * Отримати категорії товарів
-	 * @returns {Promise<Object>} Список категорій
+	 * ПУБЛІЧНИЙ МЕТОД - не потребує авторизації
 	 */
 	async getCategories() {
 		try {
-			const response = await axios.get(`${this.baseURL}/categories`, {
-				headers: this.getHeaders()
-			});
-
+			const response = await axios.get(`${this.baseURL}/categories`);
 			return response.data;
 		} catch (error) {
 			console.error('Помилка отримання категорій:', error);
@@ -87,14 +75,11 @@ class ShopService {
 
 	/**
 	 * Отримати типи товарів
-	 * @returns {Promise<Object>} Список типів
+	 * ПУБЛІЧНИЙ МЕТОД - не потребує авторизації
 	 */
 	async getProductTypes() {
 		try {
-			const response = await axios.get(`${this.baseURL}/types`, {
-				headers: this.getHeaders()
-			});
-
+			const response = await axios.get(`${this.baseURL}/types`);
 			return response.data;
 		} catch (error) {
 			console.error('Помилка отримання типів товарів:', error);
@@ -104,11 +89,7 @@ class ShopService {
 
 	/**
 	 * Купити товар
-	 * @param {Object} purchaseData - Дані про покупку
-	 * @param {number} purchaseData.productId - ID товару
-	 * @param {string} purchaseData.paymentCurrency - Валюта (game/donate)
-	 * @param {number} purchaseData.promocodeId - ID промокоду (опціонально)
-	 * @returns {Promise<Object>} Результат покупки
+	 * ПРИВАТНИЙ МЕТОД - потребує авторизації
 	 */
 	async purchaseProduct(purchaseData) {
 		try {
@@ -134,10 +115,7 @@ class ShopService {
 
 	/**
 	 * Отримати історію покупок користувача
-	 * @param {Object} params - Параметри пагінації
-	 * @param {number} params.page - Сторінка
-	 * @param {number} params.limit - Кількість на сторінці
-	 * @returns {Promise<Object>} Історія покупок
+	 * ПРИВАТНИЙ МЕТОД - потребує авторизації
 	 */
 	async getPurchaseHistory(params = {}) {
 		try {
@@ -162,9 +140,6 @@ class ShopService {
 
 	/**
 	 * Перевірити чи користувач може купити товар
-	 * @param {Object} product - Товар
-	 * @param {Object} userPurchaseHistory - Історія покупок користувача
-	 * @returns {boolean} Чи може користувач купити товар
 	 */
 	canUserPurchaseProduct(product, userPurchaseHistory = []) {
 		// Якщо немає ліміту на покупки
@@ -182,9 +157,6 @@ class ShopService {
 
 	/**
 	 * Розрахувати фінальну ціну з урахуванням знижки
-	 * @param {number} originalPrice - Оригінальна ціна
-	 * @param {number} discountPercent - Відсоток знижки
-	 * @returns {number} Фінальна ціна
 	 */
 	calculateFinalPrice(originalPrice, discountPercent = 0) {
 		if (!originalPrice || discountPercent <= 0) {
@@ -196,10 +168,6 @@ class ShopService {
 
 	/**
 	 * Форматувати товар для відображення
-	 * @param {Object} product - Товар
-	 * @param {Object} user - Користувач (якщо авторизований)
-	 * @param {Array} userPurchaseHistory - Історія покупок користувача
-	 * @returns {Object} Відформатований товар
 	 */
 	formatProductForDisplay(product, user = null, userPurchaseHistory = []) {
 		const formattedProduct = {
@@ -243,9 +211,6 @@ class ShopService {
 
 	/**
 	 * Отримати відформатовані товари з урахуванням користувача
-	 * @param {Object} params - Параметри фільтрації
-	 * @param {Object} user - Користувач (якщо авторизований)
-	 * @returns {Promise<Object>} Відформатовані товари
 	 */
 	async getFormattedProducts(params = {}, user = null) {
 		try {
@@ -259,14 +224,13 @@ class ShopService {
 					userPurchaseHistory = historyData.purchases || [];
 				} catch (error) {
 					console.warn('Не вдалося завантажити історію покупок:', error);
+					// Не кидаємо помилку - просто працюємо без істоpiї
 				}
 			}
 
 			// Форматуємо товари
 			const formattedProducts = productsData.products
-				.map(product => this.formatProductForDisplay(product, user, userPurchaseHistory))
-				// Якщо користувач авторизований, фільтруємо товари які він не може купити
-				.filter(product => !user || product.canPurchase);
+				.map(product => this.formatProductForDisplay(product, user, userPurchaseHistory));
 
 			return {
 				...productsData,
@@ -280,9 +244,6 @@ class ShopService {
 
 	/**
 	 * Отримати рекомендовані товари
-	 * @param {Object} user - Користувач
-	 * @param {number} limit - Кількість товарів
-	 * @returns {Promise<Array>} Рекомендовані товари
 	 */
 	async getRecommendedProducts(user = null, limit = 6) {
 		try {

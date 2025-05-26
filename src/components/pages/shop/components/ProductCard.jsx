@@ -278,6 +278,7 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 										disabled={isLoading}
 									>
 										<div className="purchase-option__price">
+											<img src="/assets/icons/GFC.svg" alt="G" width={32} height={32} />
 											{getPriceWithPromocode(product.game_price, 'game')} GFC
 											{(product.hasDiscount || appliedPromocode) && (
 												<span className="original-price">{product.game_price} GFC</span>
@@ -298,7 +299,8 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 										onClick={() => handlePurchase('donate')}
 										disabled={isLoading}
 									>
-										<div className="purchase-option__price">
+										<div className="purchase-option__price" style={{ color: "#FBFF00" }}>
+											<img src="/assets/icons/DFC.svg" alt="G" width={32} height={32} />
 											{getPriceWithPromocode(product.donate_price, 'donate')} DFC
 											{(product.hasDiscount || appliedPromocode) && (
 												<span className="original-price">{product.donate_price} DFC</span>

@@ -5,15 +5,23 @@ import axios from 'axios';
 
 const AuthContext = createContext(null);
 
-// Налаштовуємо інтерцептор для обробки 401 помилок
+// Створюємо окремий екземпляр axios без інтерцепторів для початкової перевірки
+const authAxios = axios.create();
+
+// Налаштовуємо інтерцептор тільки для основного axios
+// і тільки для запитів, які потребують авторизації
 axios.interceptors.response.use(
 	response => response,
 	async error => {
 		const originalRequest = error.config;
 
-		// Якщо це 401 і запит ще не повторювався
-		if (error.response?.status === 401 && !originalRequest._retry
-			&& !originalRequest.url.includes('/auth/login')) {
+		// Перевіряємо чи це запит, який потребує авторизації
+		// і чи не є це запит логіну або верифікації
+		const requiresAuth = originalRequest.headers?.['Authorization'];
+		const isAuthEndpoint = originalRequest.url?.includes('/auth/');
+
+		// Якщо це 401, запит має авторизацію, і це не auth ендпоінт
+		if (error.response?.status === 401 && requiresAuth && !isAuthEndpoint && !originalRequest._retry) {
 			originalRequest._retry = true;
 
 			try {
@@ -21,7 +29,7 @@ axios.interceptors.response.use(
 				const refreshToken = localStorage.getItem('refresh_token');
 				if (!refreshToken) throw new Error('No refresh token');
 
-				const response = await axios.post(`${API_BASE_URL}/auth/refresh`, { refreshToken });
+				const response = await authAxios.post(`${API_BASE_URL}/auth/refresh`, { refreshToken });
 				const { token } = response.data;
 
 				// Оновлюємо токен
@@ -31,10 +39,11 @@ axios.interceptors.response.use(
 				originalRequest.headers['Authorization'] = `Bearer ${token}`;
 				return axios(originalRequest);
 			} catch (err) {
-				// Якщо не вдалося оновити токен, виходимо
+				// Якщо не вдалося оновити токен, очищуємо дані
 				document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;';
 				localStorage.removeItem('refresh_token');
-				window.location.href = '/authorization';
+
+				// НЕ перенаправляємо автоматично - залишаємо це на розсуд компонентів
 				return Promise.reject(error);
 			}
 		}
@@ -47,6 +56,7 @@ axios.interceptors.response.use(
 export function AuthProvider({ children }) {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [initialized, setInitialized] = useState(false);
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -58,31 +68,36 @@ export function AuthProvider({ children }) {
 			?.split('=')[1];
 	};
 
+	// Перевірка авторизації тільки при ініціалізації
 	useEffect(() => {
-		const token = getToken();
+		const initializeAuth = async () => {
+			const token = getToken();
 
-		if (token) {
-			axios.get(`${API_BASE_URL}/auth/verify`, {
-				headers: { 'Authorization': `Bearer ${token}` }
-			})
-				.then(res => {
+			if (token) {
+				try {
+					// Використовуємо authAxios для уникнення циклічних запитів
+					const res = await authAxios.get(`${API_BASE_URL}/auth/verify`, {
+						headers: { 'Authorization': `Bearer ${token}` }
+					});
 					setUser(res.data.user);
-				})
-				.catch(() => {
-					// При помилці очищуємо токени
+				} catch (error) {
+					// При помилці тихо очищуємо токени
 					document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;';
 					localStorage.removeItem('refresh_token');
-				})
-				.finally(() => setLoading(false));
-		} else {
+				}
+			}
+
 			setLoading(false);
-		}
+			setInitialized(true);
+		};
+
+		initializeAuth();
 	}, []);
 
 	// Функція логіну
 	const login = async (username, password) => {
 		try {
-			const res = await axios.post(`${API_BASE_URL}/auth/login`, { username, password });
+			const res = await authAxios.post(`${API_BASE_URL}/auth/login`, { username, password });
 			const { token, refreshToken, user } = res.data;
 
 			// Зберігаємо токени
@@ -117,7 +132,7 @@ export function AuthProvider({ children }) {
 
 			if (refreshToken && token) {
 				// Повідомляємо сервер про вихід
-				await axios.post(`${API_BASE_URL}/auth/logout`,
+				await authAxios.post(`${API_BASE_URL}/auth/logout`,
 					{ refreshToken },
 					{ headers: { 'Authorization': `Bearer ${token}` } }
 				).catch(() => {
@@ -144,13 +159,17 @@ export function AuthProvider({ children }) {
 		if (!token) return false;
 
 		try {
-			const res = await axios.get(`${API_BASE_URL}/auth/verify`, {
+			const res = await authAxios.get(`${API_BASE_URL}/auth/verify`, {
 				headers: { 'Authorization': `Bearer ${token}` }
 			});
 
 			setUser(res.data.user);
 			return true;
 		} catch (error) {
+			// При помилці очищуємо дані
+			document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;';
+			localStorage.removeItem('refresh_token');
+			setUser(null);
 			return false;
 		}
 	};
@@ -160,10 +179,12 @@ export function AuthProvider({ children }) {
 		<AuthContext.Provider value={{
 			user,
 			loading,
+			initialized,
 			login,
 			logout,
 			refreshUserData,
-			isAuthenticated: !!user
+			isAuthenticated: !!user,
+			getToken // Додаємо для використання в сервісах
 		}}>
 			{children}
 		</AuthContext.Provider>

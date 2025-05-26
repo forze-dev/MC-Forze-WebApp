@@ -22,7 +22,7 @@ header.scrolled {
 	background: var(--background) !important;
 }
 
-@media all and (max-width: 640px) {
+@media all and (max-width: 768px) {
 	header {
 		box-shadow: 1px 1px 4px var(--background);
 

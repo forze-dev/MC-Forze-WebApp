@@ -1,0 +1,127 @@
+// src/pages/profile/sections/ProfileStats.scss
+
+.stats-card {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+}
+
+.stats-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.stat-item {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 1rem;
+	background: rgba(255, 255, 255, 0.05);
+	border-radius: 12px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: var(--accent);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		z-index: 0;
+	}
+
+	&:hover {
+		transform: translateY(-2px);
+		border-color: rgba(74, 237, 217, 0.3);
+
+		&::before {
+			opacity: 0.05;
+		}
+	}
+
+	&.accent {
+		border-left: 3px solid var(--accent);
+	}
+
+	&.gold {
+		border-left: 3px solid var(--gold);
+	}
+
+	&.red {
+		border-left: 3px solid #ff4757;
+	}
+
+	&.gray {
+		border-left: 3px solid #8e8e93;
+	}
+
+	.stat-icon {
+		font-size: 1.5rem;
+		flex-shrink: 0;
+		position: relative;
+		z-index: 1;
+	}
+
+	.stat-content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		position: relative;
+		z-index: 1;
+
+		.stat-value {
+			font-size: 1.25rem;
+			font-weight: 700;
+			color: var(--foreground);
+		}
+
+		.stat-label {
+			font-size: 0.875rem;
+			color: rgba(255, 255, 255, 0.7);
+			font-weight: 500;
+		}
+	}
+}
+
+.favorite-world {
+	padding: 1rem;
+	background: rgba(74, 237, 217, 0.1);
+	border-radius: 12px;
+	border: 1px solid rgba(74, 237, 217, 0.2);
+
+	.world-header {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.5rem;
+
+		.world-icon {
+			font-size: 1.125rem;
+		}
+
+		.world-label {
+			font-size: 0.875rem;
+			color: rgba(255, 255, 255, 0.8);
+			font-weight: 500;
+		}
+	}
+
+	.world-name {
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: var(--accent);
+		padding-left: calc(1.125rem + 0.5rem);
+	}
+}
+
+@media (max-width: 768px) {
+	.stats-grid {
+		grid-template-columns: 1fr;
+	}
+}

@@ -14,6 +14,8 @@ const Profiler = () => {
 					<Link to={ROUTES.PROFILE}>
 						<span>{user.game_balance}</span>
 						<img src="/assets/icons/GFC.svg" alt="G" />
+						<span>{user.donate_balance}</span>
+						<img src="/assets/icons/DFC.svg" alt="G" />
 					</Link> : <Link to={ROUTES.AUTHORIZATION}>Увійти</Link>
 			}
 		</div>
