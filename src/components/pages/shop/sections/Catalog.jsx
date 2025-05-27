@@ -106,12 +106,12 @@ const Catalog = () => {
 
 				<div className="catalog-layout">
 					{/* Фільтри */}
-					{/* <aside className="catalog-sidebar">
+					<aside className="catalog-sidebar">
 						<CatalogFilters
 							currentFilters={filters}
 							onFiltersChange={handleFiltersChange}
 						/>
-					</aside> */}
+					</aside>
 
 					{/* Основний контент */}
 					<main className="catalog-main">
