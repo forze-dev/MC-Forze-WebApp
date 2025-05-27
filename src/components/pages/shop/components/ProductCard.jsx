@@ -202,11 +202,11 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 						</button>
 					</div>
 
-					{product.max_purchases_per_player > 0 && (
+					{/* {product.max_purchases_per_player > 0 && (
 						<div className="product-card__limit">
 							Ліміт: {product.max_purchases_per_player} шт.
 						</div>
-					)}
+					)} */}
 				</div>
 			</div>
 
