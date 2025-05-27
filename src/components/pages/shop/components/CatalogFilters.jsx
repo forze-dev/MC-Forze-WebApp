@@ -103,7 +103,7 @@ const CatalogFilters = ({ onFiltersChange, currentFilters }) => {
 				)}
 
 				{/* Типи товарів */}
-				{productTypes.length > 0 && (
+				{/* {productTypes.length > 0 && (
 					<div className="catalog-filters__section">
 						<h4>Типи товарів</h4>
 						<div className="catalog-filters__options">
@@ -122,7 +122,7 @@ const CatalogFilters = ({ onFiltersChange, currentFilters }) => {
 							))}
 						</div>
 					</div>
-				)}
+				)} */}
 
 				{/* Мобільні кнопки */}
 				<div className="catalog-filters__mobile-actions">
