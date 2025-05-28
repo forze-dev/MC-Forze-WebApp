@@ -216,8 +216,8 @@
 		}
 
 		.catalog-grid {
-			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-			gap: 20px;
+			grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+			gap: 10px;
 		}
 
 		.catalog-header {
@@ -241,10 +241,10 @@
 
 @media (max-width: 480px) {
 	.Catalog {
-		.catalog-grid {
-			grid-template-columns: 1fr;
-			gap: 15px;
-		}
+		// .catalog-grid {
+		// 	grid-template-columns: 1fr;
+		// 	gap: 15px;
+		// }
 
 		.catalog-header {
 			h1 {

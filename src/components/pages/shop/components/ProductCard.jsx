@@ -28,7 +28,8 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 				price: product.discountedPrices.game,
 				originalPrice: product.game_price,
 				currency: 'game',
-				currencySymbol: 'GFC'
+				currencyText: "GFC",
+				currencySymbol: <img src='/assets/icons/GFC.svg' width={18} height={18} />
 			};
 		}
 		if (product.discountedPrices.donate) {
@@ -36,7 +37,8 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 				price: product.discountedPrices.donate,
 				originalPrice: product.donate_price,
 				currency: 'donate',
-				currencySymbol: 'DFC'
+				currencyText: "DFC",
+				currencySymbol: <img src='/assets/icons/DFC.svg' width={18} height={18} />
 			};
 		}
 		return null;
@@ -177,12 +179,12 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 					<div className="product-card__footer">
 						<div className="product-card__price">
 							<span className="current-price">
-								{displayPrice.price} {displayPrice.currencySymbol}
+								{displayPrice.currencySymbol} {displayPrice.price}
 							</span>
 
 							{product.hasDiscount && displayPrice.originalPrice !== displayPrice.price && (
 								<span className="original-price">
-									{displayPrice.originalPrice} {displayPrice.currencySymbol}
+									{displayPrice.originalPrice} {displayPrice.currencyText}
 								</span>
 							)}
 
