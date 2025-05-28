@@ -25,7 +25,7 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 	const getDisplayPrice = () => {
 		if (product.discountedPrices.game) {
 			return {
-				price: product.discountedPrices.game,
+				price: <span>{product.discountedPrices.game}</span>,
 				originalPrice: product.game_price,
 				currency: 'game',
 				currencyText: "GFC",
@@ -34,7 +34,7 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 		}
 		if (product.discountedPrices.donate) {
 			return {
-				price: product.discountedPrices.donate,
+				price: <span style={{ color: "#FBFF00" }}>{product.discountedPrices.donate}</span>,
 				originalPrice: product.donate_price,
 				currency: 'donate',
 				currencyText: "DFC",
