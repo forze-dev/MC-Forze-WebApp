@@ -35,7 +35,7 @@ function ProfileHeader({ user }) {
 						<div className="profile-meta">
 							<div className="meta-item">
 								<span className="meta-icon">📅</span>
-								<span>Зареєстрований {new Date(user.registered_at).toLocaleDateString()}</span>
+								<span>Зареєстрований {new Date(user.registered_at * 1000).toLocaleDateString()}</span>
 							</div>
 							<div className="meta-item">
 								<span className="meta-icon">💬</span>
