@@ -1,8 +1,7 @@
 // src/components/pages/shop/components/ProductCard.jsx
-// Компонент карточки товару з підтримкою промокодів
-// Оновлена версія з полем для введення промокоду та застосуванням знижок
-
+import React from 'react';
 import { useState } from 'react';
+import { Info, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../../../contexts/AuthContext';
 import shopService from '../../../../services/shop.service';
 import promocodesService from '../../../../services/promocodes.service';
@@ -14,12 +13,20 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 	const { user, isAuthenticated, refreshUserData } = useAuth();
 	const [isLoading, setIsLoading] = useState(false);
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+	const [isFlipped, setIsFlipped] = useState(false);
 
 	// Стан для промокодів
 	const [promocodeInput, setPromocodeInput] = useState('');
 	const [appliedPromocode, setAppliedPromocode] = useState(null);
 	const [promocodeLoading, setPromocodeLoading] = useState(false);
 	const [promocodeError, setPromocodeError] = useState('');
+
+	// Функція для обрізання опису до першої крапки
+	const getShortDescription = (description) => {
+		if (!description) return '';
+		const firstSentence = description.split('.')[0];
+		return firstSentence + (description.includes('.') ? '.' : '');
+	};
 
 	// Отримуємо першу доступну ціну для відображення
 	const getDisplayPrice = () => {
@@ -46,7 +53,6 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 
 	// Розрахунок ціни з урахуванням промокоду
 	const calculatePriceWithPromocode = (originalPrice, userDiscount = 0, promocodeDiscount = 0) => {
-		// Застосовуємо найбільшу знижку
 		const maxDiscount = Math.max(userDiscount, promocodeDiscount);
 		return Math.ceil(originalPrice * (100 - maxDiscount) / 100);
 	};
@@ -100,7 +106,6 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 				paymentCurrency
 			};
 
-			// Додаємо промокод якщо застосований
 			if (appliedPromocode) {
 				purchaseData.promocodeId = appliedPromocode.id;
 			}
@@ -109,17 +114,13 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 
 			alert(`Покупка успішна! ${result.execution.message || ''}`);
 
-			// Оновлюємо дані користувача
 			await refreshUserData();
 
-			// Викликаємо callback для оновлення списку
 			if (onPurchaseSuccess) {
 				onPurchaseSuccess(product.id);
 			}
 
 			setShowPurchaseModal(false);
-
-			// Очищаємо промокод після успішної покупки
 			handleRemovePromocode();
 		} catch (error) {
 			alert(`Помилка покупки: ${error.message}`);
@@ -144,71 +145,129 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 
 	return (
 		<>
-			<div className="product-card">
-				<div className="product-card__image">
-					{product.images && product.images.length > 0 ? (
-						<img
-							src={API_BASE_URL + product.images[0]}
-							alt={product.name}
-							onError={(e) => {
-								e.target.src = '/assets/images/placeholder-product.png';
-							}}
-						/>
-					) : (
-						<div className="placeholder-image">
-							<span>Без фото</span>
+			<div className={`product-card ${isFlipped ? 'flipped' : ''}`}>
+				<div className="product-card__inner">
+					{/* Передня сторона */}
+					<div className="product-card__front">
+						<div className="product-card__image">
+							{product.images && product.images.length > 0 ? (
+								<img
+									src={API_BASE_URL + product.images[0]}
+									alt={product.name}
+									onError={(e) => {
+										e.target.src = '/assets/images/placeholder-product.png';
+									}}
+								/>
+							) : (
+								<div className="placeholder-image">
+									<span>Без фото</span>
+								</div>
+							)}
 						</div>
-					)}
-				</div>
 
-				<div className="product-card__content">
-					<div className="product-card__header">
-						<h3 className="product-card__title">{product.name}</h3>
+						<div className="product-card__content">
+							<div className="product-card__header">
+								<h3 className="product-card__title">{product.name}</h3>
+								<span className="product-card__type">{product.product_type}</span>
+							</div>
+
+							{product.description && (
+								<p className="product-card__description">
+									{getShortDescription(product.description)}
+								</p>
+							)}
+
+							<div className="product-card__footer">
+								<div className="product-card__price">
+									<span className="current-price">
+										{displayPrice.currencySymbol} {displayPrice.price}
+									</span>
+
+									{product.hasDiscount && displayPrice.originalPrice !== displayPrice.price && (
+										<span className="original-price">
+											{displayPrice.originalPrice} {displayPrice.currencyText}
+										</span>
+									)}
+
+									{product.hasDiscount && (
+										<span className="discount-badge">
+											-{product.userDiscount}%
+										</span>
+									)}
+								</div>
+
+								<div className="product-card__actions">
+									<button
+										className="product-card__buy-btn"
+										onClick={() => setShowPurchaseModal(true)}
+										disabled={isLoading}
+									>
+										{isLoading ? 'Обробка...' : 'Купити'}
+									</button>
+									<button
+										className="product-card__info-btn"
+										onClick={() => setIsFlipped(true)}
+										title="Детальна інформація"
+									>
+										<Info size={16} />
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Задня сторона */}
+					<div className="product-card__back">
 						<span className="product-card__type">{product.product_type}</span>
-					</div>
-
-					{product.description && (
-						<p className="product-card__description">
-							{product.description.length > 100
-								? `${product.description.substring(0, 100)}...`
-								: product.description
-							}
-						</p>
-					)}
-
-					<div className="product-card__footer">
-						<div className="product-card__price">
-							<span className="current-price">
-								{displayPrice.currencySymbol} {displayPrice.price}
+						{product.hasDiscount && (
+							<span className="discount-badge">
+								-{product.userDiscount}%
 							</span>
-
-							{product.hasDiscount && displayPrice.originalPrice !== displayPrice.price && (
-								<span className="original-price">
-									{displayPrice.originalPrice} {displayPrice.currencyText}
-								</span>
-							)}
-
-							{product.hasDiscount && (
-								<span className="discount-badge">
-									-{product.userDiscount}%
-								</span>
-							)}
+						)}
+						<div className="product-card__back-header">
+							<h3 className="product-card__back-title">{product.name}</h3>
 						</div>
 
-						<button
-							className="product-card__buy-btn"
-							onClick={() => setShowPurchaseModal(true)}
-							disabled={isLoading}
-						>
-							{isLoading ? 'Обробка...' : 'Купити'}
-						</button>
+						<div className="product-card__back-content">
+							<div className="product-card__back-description">
+								<h4>Детальний опис:</h4>
+								<p>
+									{(product.description || 'Опис товару відсутній')
+										.split('\n')
+										.map((line, i) => <span key={i}>{line}<br /></span>)}
+								</p>
+							</div>
+
+							{product.items_data && (
+								<div className="product-card__back-items">
+									<h4>Що входить:</h4>
+									<div className="items-list">
+										{JSON.parse(product.items_data).map((item, index) => (
+											<div key={index} className="item">
+												<span className="item-name">{item.name || item.minecraft_id}</span>
+												{item.amount && <span className="item-amount">x{item.amount}</span>}
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+
+							<div className="product-card__back-price">
+								<div className="price-info">
+									<button
+										className="product-card__back-btn"
+										onClick={() => setIsFlipped(false)}
+									>
+										<ArrowLeft size={16} />
+										Назад
+									</button>
+									<span className="price-value">
+										{displayPrice.currencySymbol} {displayPrice.price}
+									</span>
+								</div>
+							</div>
+						</div>
 					</div>
-
-					{/* {product.max_purchases_per_player > 0 && (
-						<div className="product-card__limit">
-							Ліміт: {product.max_purchases_per_player} шт.
-						</div>
-					)} */}
 				</div>
 			</div>
 
