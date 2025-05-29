@@ -1,0 +1,429 @@
+// src/components/pages/profile/styles/TransferModal.scss
+.transfer-modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(5px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+	padding: 20px;
+}
+
+.transfer-modal {
+	background: var(--background);
+	border-radius: 15px;
+	max-width: 500px;
+	width: 100%;
+	max-height: 90vh;
+	max-height: 90dvh;
+	overflow-y: auto;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+		h3 {
+			font-size: 20px;
+			margin: 0;
+			color: var(--foreground);
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			&::before {
+				content: "💸";
+				font-size: 24px;
+			}
+		}
+	}
+
+	&__close {
+		background: none;
+		border: none;
+		color: var(--foreground);
+		font-size: 24px;
+		cursor: pointer;
+		width: 32px;
+		height: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		transition: background 0.2s ease;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.1);
+		}
+	}
+
+	&__content {
+		padding: 20px;
+	}
+
+	&__form {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	&__field {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		label {
+			font-size: 14px;
+			font-weight: 600;
+			color: var(--foreground);
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		input,
+		textarea {
+			padding: 12px 15px;
+			background: rgba(0, 0, 0, 0.3);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			border-radius: 8px;
+			color: var(--foreground);
+			font-size: 16px;
+			transition: all 0.2s ease;
+
+			&::placeholder {
+				color: rgba(255, 255, 255, 0.5);
+			}
+
+			&:focus {
+				outline: none;
+				border-color: var(--accent);
+				box-shadow: 0 0 0 2px rgba(74, 237, 217, 0.2);
+				background: rgba(0, 0, 0, 0.4);
+			}
+
+			&:disabled {
+				opacity: 0.6;
+				cursor: not-allowed;
+			}
+		}
+
+		textarea {
+			resize: vertical;
+			min-height: 60px;
+			max-height: 120px;
+		}
+
+		.field-hint {
+			font-size: 12px;
+			color: rgba(255, 255, 255, 0.6);
+		}
+	}
+
+	&__commission {
+		background: rgba(251, 255, 0, 0.1);
+		border: 1px solid rgba(251, 255, 0, 0.3);
+		border-radius: 10px;
+		padding: 15px;
+		margin: 15px 0;
+
+		&-header {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin-bottom: 10px;
+			font-weight: 600;
+			color: var(--gold);
+
+			&::before {
+				content: "💰";
+				font-size: 18px;
+			}
+		}
+
+		&-breakdown {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			font-size: 14px;
+
+			.commission-line {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				&.total {
+					padding-top: 6px;
+					border-top: 1px solid rgba(251, 255, 0, 0.3);
+					font-weight: 700;
+					color: var(--gold);
+				}
+			}
+		}
+	}
+
+	&__balance-info {
+		background: rgba(74, 237, 217, 0.1);
+		border: 1px solid rgba(74, 237, 217, 0.3);
+		border-radius: 8px;
+		padding: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 15px;
+
+		.balance-label {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 14px;
+		}
+
+		.balance-value {
+			color: var(--accent);
+			font-weight: 700;
+			font-size: 16px;
+			display: flex;
+			align-items: center;
+			gap: 5px;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		gap: 12px;
+		margin-top: 20px;
+
+		button {
+			flex: 1;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 8px;
+			font-size: 16px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+		}
+
+		.transfer-btn {
+			background: var(--accent);
+			color: var(--foreaccent);
+
+			&:hover:not(:disabled) {
+				background: rgba(74, 237, 217, 0.9);
+				transform: translateY(-2px);
+			}
+
+			&:disabled {
+				opacity: 0.6;
+				cursor: not-allowed;
+				transform: none;
+			}
+
+			&.loading {
+				position: relative;
+				color: transparent;
+
+				&::after {
+					content: "";
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					width: 20px;
+					height: 20px;
+					margin: -10px 0 0 -10px;
+					border: 2px solid rgba(1, 39, 34, 0.3);
+					border-top-color: var(--foreaccent);
+					border-radius: 50%;
+					animation: spin 0.8s linear infinite;
+				}
+			}
+		}
+
+		.cancel-btn {
+			background: rgba(255, 255, 255, 0.1);
+			color: var(--foreground);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+
+			&:hover {
+				background: rgba(255, 255, 255, 0.2);
+				transform: translateY(-2px);
+			}
+		}
+	}
+
+	&__error {
+		background: rgba(239, 68, 68, 0.1);
+		border: 1px solid rgba(239, 68, 68, 0.3);
+		border-radius: 8px;
+		padding: 12px;
+		color: #ef4444;
+		font-size: 14px;
+		margin-bottom: 15px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		animation: shake 0.5s ease-in-out;
+
+		&::before {
+			content: "⚠️";
+			font-size: 16px;
+		}
+	}
+
+	&__success {
+		background: rgba(34, 197, 94, 0.1);
+		border: 1px solid rgba(34, 197, 94, 0.3);
+		border-radius: 8px;
+		padding: 12px;
+		color: #22c55e;
+		font-size: 14px;
+		margin-bottom: 15px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+
+		&::before {
+			content: "✅";
+			font-size: 16px;
+		}
+	}
+}
+
+// Анімації
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-5px);
+	}
+	75% {
+		transform: translateX(5px);
+	}
+}
+
+// Адаптивність
+@media (max-width: 768px) {
+	.transfer-modal {
+		margin: 10px;
+
+		&__header {
+			padding: 15px;
+
+			h3 {
+				font-size: 18px;
+			}
+		}
+
+		&__content {
+			padding: 15px;
+		}
+
+		&__field {
+			input,
+			textarea {
+				padding: 10px 12px;
+				font-size: 16px; // Важливо для iOS Safari
+			}
+		}
+
+		&__actions {
+			flex-direction: column;
+			gap: 10px;
+
+			button {
+				padding: 12px 16px;
+				font-size: 14px;
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.transfer-modal-overlay {
+		padding: 10px;
+	}
+
+	.transfer-modal {
+		&__commission {
+			padding: 12px;
+
+			&-breakdown {
+				font-size: 13px;
+			}
+		}
+
+		&__balance-info {
+			padding: 10px;
+
+			.balance-label {
+				font-size: 13px;
+			}
+
+			.balance-value {
+				font-size: 14px;
+			}
+		}
+	}
+}
+
+// Додаткові стилі для невеликих покращень UX
+.transfer-modal__field {
+	&.has-error {
+		input,
+		textarea {
+			border-color: #ef4444;
+			box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+		}
+	}
+
+	&.has-success {
+		input {
+			border-color: #22c55e;
+			box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+		}
+	}
+}
+
+// Стилі для інпута з валідацією в реальному часі
+.transfer-modal__amount-field {
+	position: relative;
+
+	.amount-status {
+		position: absolute;
+		right: 15px;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 14px;
+
+		&.valid {
+			color: #22c55e;
+		}
+
+		&.invalid {
+			color: #ef4444;
+		}
+	}
+}

@@ -21,6 +21,35 @@
 		transition: all 0.3s ease;
 	}
 
+	.transfer-btn {
+		width: 100%;
+		background: var(--accent);
+		color: var(--foreaccent);
+		border: none;
+		border-radius: 8px;
+		padding: 0 12px;
+		font-size: 16px;
+		height: 40px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		justify-content: center;
+
+		&:hover:not(:disabled) {
+			background: rgba(74, 237, 217, 0.9);
+			transform: translateY(-2px);
+		}
+
+		&:disabled {
+			opacity: 0.7;
+			cursor: not-allowed;
+			transform: none;
+		}
+	}
+
 	.balance-item:hover {
 		background: rgba(255, 255, 255, 0.08);
 		border-color: rgba(74, 237, 217, 0.3);
