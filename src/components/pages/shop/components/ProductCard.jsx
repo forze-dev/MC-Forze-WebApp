@@ -6,11 +6,16 @@ import { useAuth } from '../../../../contexts/AuthContext';
 import shopService from '../../../../services/shop.service';
 import promocodesService from '../../../../services/promocodes.service';
 import { API_BASE_URL } from '../../../../constants/config';
+import PurchaseSuccessModal from './PurchaseSuccessModal';
 import '../styles/promocode-styles.scss';
 import '../styles/product-card.scss';
 
 const ProductCard = ({ product, onPurchaseSuccess }) => {
 	const { user, isAuthenticated, refreshUserData } = useAuth();
+	const [showSuccessModal, setShowSuccessModal] = useState(false);
+	const [purchasedProductName, setPurchasedProductName] = useState('');
+	const [hasStorageItems, setHasStorageItems] = useState(false);
+
 	const [isLoading, setIsLoading] = useState(false);
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 	const [isFlipped, setIsFlipped] = useState(false);
@@ -20,6 +25,12 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 	const [appliedPromocode, setAppliedPromocode] = useState(null);
 	const [promocodeLoading, setPromocodeLoading] = useState(false);
 	const [promocodeError, setPromocodeError] = useState('');
+
+	// Функція для перевірки чи товар має предмети для сховища
+	const checkIfProductHasStorageItems = (product) => {
+
+		return product.product_type === 'item'
+	};
 
 	// Функція для обрізання опису до першої крапки
 	const getShortDescription = (description) => {
@@ -110,20 +121,26 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 				purchaseData.promocodeId = appliedPromocode.id;
 			}
 
-			const result = await shopService.purchaseProduct(purchaseData);
+			await shopService.purchaseProduct(purchaseData);
 
-			alert(`Покупка успішна! ${result.execution.message || ''}`);
+			// Закриваємо модалку покупки
+			setShowPurchaseModal(false);
 
-			await refreshUserData();
+			// Встановлюємо дані для модалки успіху
+			setPurchasedProductName(product.name);
+			setHasStorageItems(checkIfProductHasStorageItems(product));
 
+			// Показуємо модалку успіху
+			setShowSuccessModal(true);
+
+			// Викликаємо callback для батьківського компонента
 			if (onPurchaseSuccess) {
 				onPurchaseSuccess(product.id);
 			}
 
-			setShowPurchaseModal(false);
-			handleRemovePromocode();
 		} catch (error) {
-			alert(`Помилка покупки: ${error.message}`);
+			console.error('Помилка покупки:', error);
+			alert(`Помилка: ${error.message}`);
 		} finally {
 			setIsLoading(false);
 		}
@@ -269,7 +286,16 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 						</div>
 					</div>
 				</div>
+
 			</div>
+
+
+			<PurchaseSuccessModal
+				isOpen={showSuccessModal}
+				onClose={() => setShowSuccessModal(false)}
+				productName={purchasedProductName}
+				hasStorageItems={hasStorageItems}
+			/>
 
 			{/* Модальне вікно покупки з промокодами */}
 			{showPurchaseModal && (
