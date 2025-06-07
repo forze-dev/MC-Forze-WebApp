@@ -248,26 +248,26 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 						<div className="product-card__back-content">
 							<div className="product-card__back-description">
 								<h4>Детальний опис:</h4>
-								<p>
+								<p className='product-description-text'>
 									{(product.description || 'Опис товару відсутній')
 										.split('\n')
 										.map((line, i) => <span key={i}>{line}<br /></span>)}
 								</p>
+								{product.items_data && (
+									<div className="product-card__back-items">
+										<h4>Що входить:</h4>
+										<div className="items-list">
+											{product.items_data.map((item, index) => (
+												<div key={index} className="item">
+													<span className="item-name">{item.name || item.minecraft_id}</span>
+													{item.amount && <span className="item-amount">x{item.amount}</span>}
+												</div>
+											))}
+										</div>
+									</div>
+								)}
 							</div>
 
-							{product.items_data && (
-								<div className="product-card__back-items">
-									<h4>Що входить:</h4>
-									<div className="items-list">
-										{JSON.parse(product.items_data).map((item, index) => (
-											<div key={index} className="item">
-												<span className="item-name">{item.name || item.minecraft_id}</span>
-												{item.amount && <span className="item-amount">x{item.amount}</span>}
-											</div>
-										))}
-									</div>
-								</div>
-							)}
 
 							<div className="product-card__back-price">
 								<div className="price-info">

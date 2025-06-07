@@ -6,6 +6,10 @@
 	min-height: 400px; // Мінімальна висота
 	perspective: 1000px;
 
+	.product-description-text {
+		margin-bottom: 8px;
+	}
+
 	&__inner {
 		position: relative;
 		width: 100%;
@@ -286,6 +290,7 @@
 	}
 
 	&__back-items {
+		padding-right: 6px;
 		h4 {
 			font-size: 14px;
 			color: var(--accent);
