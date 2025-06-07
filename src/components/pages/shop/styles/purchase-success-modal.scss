@@ -16,8 +16,7 @@
 }
 
 .purchase-success-modal {
-	background: var(--background-secondary);
-	border: 1px solid var(--border);
+	background: var(--background);
 	border-radius: 16px;
 	padding: 0;
 	max-width: 500px;
@@ -100,16 +99,18 @@
 
 			&__content {
 				flex: 1;
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
 
 				h4 {
-					margin: 0 0 8px 0;
 					color: var(--accent);
 					font-size: 16px;
 					font-weight: 600;
 				}
 
 				p {
-					margin: 0 0 12px 0;
 					color: var(--foreground);
 					font-size: 14px;
 					line-height: 1.5;
@@ -121,8 +122,6 @@
 					border-radius: 8px;
 					padding: 12px;
 					text-align: center;
-					margin-top: 8px;
-
 					code {
 						color: var(--accent);
 						font-family: "Courier New", monospace;
