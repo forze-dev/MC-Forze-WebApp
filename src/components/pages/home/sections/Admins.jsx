@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, EffectCoverflow } from 'swiper/modules';
 import MinecraftSkinViewer from "../../../common/MinecraftSkinViewer/MinecraftSkinViewer";
@@ -9,6 +9,12 @@ import "../styles/admins.scss";
 
 const Admins = () => {
 	const [swiperInstance, setSwiperInstance] = useState(null);
+	const [adminsData, setAdminsData] = useState(null)
+
+	useEffect(() => {
+		fetch("/assets/adminSkins/data.json").then(data => data.json()).then(res => setAdminsData(res))
+	}, [])
+
 	const autoplayRef = useRef(null);
 	// Функції для керування слайдером при взаємодії зі скіном
 	const handleSkinInteractionStart = () => {
@@ -39,40 +45,7 @@ const Admins = () => {
 		}
 	};
 
-	const adminsData = [
-		{
-			id: 1,
-			skinUrl: "/assets/adminSkins/forze.png",
-			nickname: "forze",
-			role: "Власник",
-			roleColor: "#ff6b6b",
-			description: "Засновник і творець проекту. Займається розробкою сайту, загальною організацією та координацією всіх процесів на сервері."
-		},
-		{
-			id: 2,
-			skinUrl: "/assets/adminSkins/ROMENPRO.png",
-			nickname: "ROMENPRO",
-			role: "Хост",
-			roleColor: "#4ecdc4",
-			description: "Головний технічний спеціаліст. Реалізує все на сервері, розробляє плагіни, налаштовує технічну частину та підтримує стабільність роботи."
-		},
-		{
-			id: 3,
-			skinUrl: "/assets/adminSkins/Clabster_.png",
-			nickname: "Clabster_",
-			role: "Модератор",
-			roleColor: "#45b7d1",
-			description: "Експерт з механік Minecraft. Знає все про гру більше за інших, надає цінні поради та допомагає у вирішенні складних питань."
-		},
-		{
-			id: 4,
-			skinUrl: "/assets/adminSkins/jdh.png",
-			nickname: "fgry5778",
-			role: "Модератор",
-			roleColor: "#96ceb4",
-			description: "Майстер будівництва та архітектури. Відповідає за створення красивих споруд, планування локацій та архітектурний дизайн сервера."
-		}
-	];
+	if (!adminsData) return null
 
 	return (
 		<section className="admins">

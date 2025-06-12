@@ -1,0 +1,34 @@
+[
+	{
+		"id": 1,
+		"skinUrl": "/assets/adminSkins/forze.png",
+		"nickname": "forze",
+		"role": "Власник",
+		"roleColor": "#ff6b6b",
+		"description": "Засновник і творець проекту. Займається розробкою сайту, загальною організацією та координацією всіх процесів на сервері."
+	},
+	{
+		"id": 2,
+		"skinUrl": "/assets/adminSkins/ROMENPRO.png",
+		"nickname": "ROMENPRO",
+		"role": "Хост",
+		"roleColor": "#4ecdc4",
+		"description": "Головний технічний спеціаліст. Реалізує все на сервері, розробляє плагіни, налаштовує технічну частину та підтримує стабільність роботи."
+	},
+	{
+		"id": 3,
+		"skinUrl": "/assets/adminSkins/Clabster_.png",
+		"nickname": "Clabster_",
+		"role": "Гуру",
+		"roleColor": "#45b7d1",
+		"description": "Експерт з механік Minecraft. Знає все про гру більше за інших, надає цінні поради та допомагає у вирішенні складних питань."
+	},
+	{
+		"id": 4,
+		"skinUrl": "/assets/adminSkins/jdh.png",
+		"nickname": "_v__kma",
+		"role": "Модератор",
+		"roleColor": "#96ceb4",
+		"description": "Правила та порядок - це про нього! Пропав лут, когось вбили, або десь застрягли в текстурах, пиши йому і він швидко все виправить!"
+	}
+]

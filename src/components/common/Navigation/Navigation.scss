@@ -23,7 +23,7 @@ nav.menu {
 	}
 
 	li.active {
-		border-bottom: 3px dashed var(--accent);
+		color: var(--accent);
 	}
 	.icon-box {
 		display: none;

@@ -18,23 +18,21 @@ function App() {
 			<AuthProvider>
 				<div className="app">
 					<Header />
-					<main>
-						<Routes>
-							<Route path={ROUTES.HOME} element={<HomePage />} />
-							<Route path="/shop" element={<ShopPage />} />
-							{/*<Route path="/games" element={<Games />} />
+					<Routes>
+						<Route path={ROUTES.HOME} element={<HomePage />} />
+						<Route path="/shop" element={<ShopPage />} />
+						{/*<Route path="/games" element={<Games />} />
 							<Route path="/events" element={<Events />} /> */}
-							<Route path="/authorization" element={<AuthPage />} />
-							<Route
-								path={ROUTES.PROFILE}
-								element={
-									<ProtectedRoute>
-										<Profile />
-									</ProtectedRoute>
-								}
-							/>
-						</Routes>
-					</main>
+						<Route path="/authorization" element={<AuthPage />} />
+						<Route
+							path={ROUTES.PROFILE}
+							element={
+								<ProtectedRoute>
+									<Profile />
+								</ProtectedRoute>
+							}
+						/>
+					</Routes>
 				</div>
 			</AuthProvider>
 		</BrowserRouter>
