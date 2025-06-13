@@ -30,7 +30,7 @@ const Navigation = () => {
 						</span>
 					</NavLink>
 				</li>
-				<li className={pathname === ROUTES.MINI_GAMES ? "active" : ""}>
+				{/* <li className={pathname === ROUTES.MINI_GAMES ? "active" : ""}>
 					<NavLink to={ROUTES.MINI_GAMES}>
 						<figure className="icon-box">
 
@@ -39,8 +39,8 @@ const Navigation = () => {
 							Ігри
 						</span>
 					</NavLink>
-				</li>
-				<li className={pathname === ROUTES.EVENTS ? "active" : ""}>
+				</li> */}
+				{/* <li className={pathname === ROUTES.EVENTS ? "active" : ""}>
 					<NavLink to={ROUTES.EVENTS}>
 						<figure className="icon-box">
 
@@ -49,7 +49,7 @@ const Navigation = () => {
 							Події
 						</span>
 					</NavLink>
-				</li>
+				</li> */}
 				{
 					user &&
 					<li className={`btn ${pathname === ROUTES.PROFILE ? "active" : ""}`}>
