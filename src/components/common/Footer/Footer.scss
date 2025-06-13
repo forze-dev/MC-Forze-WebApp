@@ -1,0 +1,318 @@
+// src/components/common/Footer/Footer.scss
+
+.site-footer {
+	background: var(--background);
+	border-top: 1px solid rgba(74, 237, 217, 0.2);
+	margin-top: auto;
+	padding: 40px 0 20px;
+	color: var(--foreground);
+
+	.footer-content {
+		display: grid;
+		grid-template-columns: 2fr 1fr 1fr 1.5fr;
+		gap: 40px;
+		margin-bottom: 30px;
+	}
+
+	.footer-section {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+
+		.footer-title {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: var(--accent);
+			margin: 0;
+			margin-bottom: 10px;
+		}
+
+		.footer-subtitle {
+			font-size: 1.1rem;
+			font-weight: 600;
+			color: var(--foreground);
+			margin: 0;
+			margin-bottom: 5px;
+		}
+
+		.footer-description {
+			color: rgba(255, 255, 255, 0.8);
+			line-height: 1.5;
+			margin: 0;
+			margin-bottom: 15px;
+		}
+
+		.server-ip {
+			margin-top: 10px;
+		}
+	}
+
+	.footer-links {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		li {
+			a {
+				color: rgba(255, 255, 255, 0.7);
+				text-decoration: none;
+				transition: all 0.2s ease;
+				font-size: 14px;
+
+				&:hover {
+					color: var(--accent);
+					transform: translateX(3px);
+				}
+			}
+		}
+	}
+
+	.footer-contacts {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+
+		.contact-item {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 14px;
+
+			.contact-icon {
+				font-size: 16px;
+				width: 20px;
+				text-align: center;
+			}
+
+			a {
+				color: rgba(255, 255, 255, 0.8);
+				text-decoration: none;
+				transition: color 0.2s ease;
+
+				&:hover {
+					color: var(--accent);
+				}
+			}
+
+			span {
+				color: rgba(255, 255, 255, 0.7);
+			}
+		}
+	}
+
+	.social-links {
+		display: flex;
+		gap: 10px;
+		margin-top: 15px;
+
+		.social-link {
+			width: 35px;
+			height: 35px;
+			background: rgba(74, 237, 217, 0.1);
+			border: 1px solid rgba(74, 237, 217, 0.3);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-decoration: none;
+			font-size: 16px;
+			transition: all 0.2s ease;
+
+			&:hover {
+				background: var(--accent);
+				border-color: var(--accent);
+				transform: translateY(-2px);
+			}
+
+			&.telegram {
+				background: rgba(0, 136, 204, 0.1);
+				border-color: rgba(0, 136, 204, 0.3);
+
+				&:hover {
+					background: #0088cc;
+					border-color: #0088cc;
+				}
+			}
+		}
+	}
+
+	.footer-bottom {
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		padding-top: 20px;
+
+		.footer-bottom-content {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 15px;
+		}
+
+		.copyright {
+			display: flex;
+			flex-direction: column;
+			gap: 5px;
+
+			p {
+				margin: 0;
+				color: rgba(255, 255, 255, 0.6);
+				font-size: 13px;
+			}
+
+			.legal-name {
+				font-size: 12px;
+				color: rgba(255, 255, 255, 0.5);
+			}
+		}
+
+		.footer-links-inline {
+			display: flex;
+			gap: 20px;
+
+			a {
+				color: rgba(255, 255, 255, 0.7);
+				text-decoration: none;
+				font-size: 13px;
+				transition: color 0.2s ease;
+
+				&:hover {
+					color: var(--accent);
+				}
+			}
+		}
+	}
+}
+
+// Адаптивність для планшетів
+@media (max-width: 1024px) {
+	.site-footer {
+		.footer-content {
+			grid-template-columns: 1fr 1fr;
+			gap: 30px;
+		}
+	}
+}
+
+// Адаптивність для мобільних пристроїв
+@media (max-width: 768px) {
+	.site-footer {
+		padding: 30px 0 15px;
+
+		.footer-content {
+			grid-template-columns: 1fr;
+			gap: 25px;
+			text-align: center;
+		}
+
+		.footer-section {
+			.footer-links {
+				align-items: center;
+			}
+
+			.footer-contacts {
+				align-items: center;
+			}
+
+			.social-links {
+				justify-content: center;
+			}
+		}
+
+		.footer-bottom {
+			.footer-bottom-content {
+				flex-direction: column;
+				text-align: center;
+				gap: 10px;
+			}
+
+			.footer-links-inline {
+				justify-content: center;
+				gap: 15px;
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.site-footer {
+		padding: 25px 0 10px;
+
+		.footer-content {
+			gap: 20px;
+		}
+
+		.footer-section {
+			.footer-title {
+				font-size: 1.3rem;
+			}
+
+			.footer-subtitle {
+				font-size: 1rem;
+			}
+
+			.footer-description {
+				font-size: 14px;
+			}
+		}
+
+		.footer-contacts {
+			.contact-item {
+				font-size: 13px;
+				justify-content: center;
+			}
+		}
+
+		.footer-links-inline {
+			flex-wrap: wrap;
+			gap: 10px;
+
+			a {
+				font-size: 12px;
+			}
+		}
+
+		.copyright {
+			p {
+				font-size: 12px;
+			}
+
+			.legal-name {
+				font-size: 11px;
+			}
+		}
+	}
+}
+
+// Анімації
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.site-footer {
+	.footer-section {
+		animation: fadeInUp 0.6s ease-out;
+
+		&:nth-child(1) {
+			animation-delay: 0.1s;
+		}
+		&:nth-child(2) {
+			animation-delay: 0.2s;
+		}
+		&:nth-child(3) {
+			animation-delay: 0.3s;
+		}
+		&:nth-child(4) {
+			animation-delay: 0.4s;
+		}
+	}
+}

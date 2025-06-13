@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ROUTES } from "./constants/routes"
 
 import Header from "./components/common/Header/Header"
+import Footer from "./components/common/Footer/Footer"
 import ProtectedRoute from "./components/common/Protected/ProtectedRoute"
 import { AuthProvider } from "./contexts/AuthContext"
 
@@ -9,6 +10,10 @@ import HomePage from "./components/pages/home/HomePage"
 import AuthPage from "./components/pages/auth/AuthPage"
 import Profile from "./components/pages/profile/ProfilePage"
 import ShopPage from "./components/pages/shop/ShopPage"
+import ContactsPage from "./components/pages/contacts/ContactsPage"
+import RefundPolicyPage from "./components/pages/refund-policy/RefundPolicyPage"
+import TermsPage from "./components/pages/terms/TermsPage"
+import PrivacyPolicyPage from "./components/pages/privacy-policy/PrivacyPolicyPage"
 
 function App() {
 
@@ -24,6 +29,10 @@ function App() {
 						{/*<Route path="/games" element={<Games />} />
 							<Route path="/events" element={<Events />} /> */}
 						<Route path="/authorization" element={<AuthPage />} />
+						<Route path="/contacts" element={<ContactsPage />} />
+						<Route path="/refund-policy" element={<RefundPolicyPage />} />
+						<Route path="/terms" element={<TermsPage />} />
+						<Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
 						<Route
 							path={ROUTES.PROFILE}
 							element={
@@ -33,6 +42,7 @@ function App() {
 							}
 						/>
 					</Routes>
+					<Footer />
 				</div>
 			</AuthProvider>
 		</BrowserRouter>

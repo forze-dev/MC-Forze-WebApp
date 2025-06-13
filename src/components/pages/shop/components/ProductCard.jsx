@@ -393,7 +393,7 @@ const ProductCard = ({ product, onPurchaseSuccess }) => {
 												<span className="original-price">{product.donate_price} DFC</span>
 											)}
 										</div>
-										<div className="purchase-option__currency">Донат валюта</div>
+										<div className="purchase-option__currency">Донат баланс</div>
 										{isAuthenticated && user && (
 											<div className="purchase-option__balance">
 												Баланс: {user.donate_balance} DFC

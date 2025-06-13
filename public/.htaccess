@@ -1,20 +1,3 @@
-# Увімкнення модуля RewriteEngine
-#RewriteEngine On
-
-# Вимкнення прямого доступу до файлів і папок (за необхідності)
-# Наприклад, щоб заборонити доступ до .env файлу:
-#<FilesMatch "\.(env|json)$">
- # Require all denied
-#</FilesMatch>
-
-# Перевірка наявності реального файлу або каталогу
-#RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteCond %{REQUEST_FILENAME} !-d
-
-# Перенаправлення усіх інших запитів до index.html
-#RewriteRule ^ index.html [L]
-
-# Увімкнення модуля RewriteEngine
 RewriteEngine On
 
 # Перенаправлення з www на без www
@@ -34,5 +17,4 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 # Перенаправляємо всі інші запити на index.html
-RewriteRule ^ index.html [L]
-
+RewriteRule . /index.html [L]
