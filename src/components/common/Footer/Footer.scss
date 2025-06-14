@@ -199,8 +199,6 @@
 // Адаптивність для мобільних пристроїв
 @media (max-width: 768px) {
 	.site-footer {
-		padding: 30px 0 15px;
-
 		.footer-content {
 			grid-template-columns: 1fr;
 			gap: 25px;
@@ -238,8 +236,6 @@
 
 @media (max-width: 480px) {
 	.site-footer {
-		padding: 25px 0 10px;
-
 		.footer-content {
 			gap: 20px;
 		}

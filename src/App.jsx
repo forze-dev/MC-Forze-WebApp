@@ -14,6 +14,8 @@ import ContactsPage from "./components/pages/contacts/ContactsPage"
 import RefundPolicyPage from "./components/pages/refund-policy/RefundPolicyPage"
 import TermsPage from "./components/pages/terms/TermsPage"
 import PrivacyPolicyPage from "./components/pages/privacy-policy/PrivacyPolicyPage"
+import QuestsPage from "./components/pages/quests/QuestsPage"
+import QuestDetailPage from "./components/pages/quest-detail/QuestDetailPage"
 
 function App() {
 
@@ -26,13 +28,15 @@ function App() {
 					<Routes>
 						<Route path={ROUTES.HOME} element={<HomePage />} />
 						<Route path="/shop" element={<ShopPage />} />
-						{/*<Route path="/games" element={<Games />} />
-							<Route path="/events" element={<Events />} /> */}
+						{/*<Route path="/games" element={<QuestsPage />} />*/}
+						<Route path="/quests" element={<QuestsPage />} />
+						<Route path="/quests/:questName" element={<QuestDetailPage />} />
 						<Route path="/authorization" element={<AuthPage />} />
 						<Route path="/contacts" element={<ContactsPage />} />
 						<Route path="/refund-policy" element={<RefundPolicyPage />} />
 						<Route path="/terms" element={<TermsPage />} />
 						<Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+
 						<Route
 							path={ROUTES.PROFILE}
 							element={

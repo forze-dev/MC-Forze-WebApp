@@ -95,11 +95,11 @@ nav.menu {
 			background-image: url("/assets/icons/game.svg");
 		}
 
-		li:nth-child(4) .icon-box {
-			background-image: url("/assets/icons/events.svg");
-		}
+		// li:nth-child(4) .icon-box {
+		// 	background-image: url("/assets/icons/events.svg");
+		// }
 
-		li:nth-child(5) .icon-box {
+		li:nth-child(4) .icon-box {
 			background-image: url("/assets/icons/profile.svg");
 		}
 
@@ -115,11 +115,11 @@ nav.menu {
 			background-image: url("/assets/icons/a-game.svg");
 		}
 
-		li.active:nth-child(4) .icon-box {
-			background-image: url("/assets/icons/a-events.svg");
-		}
+		// li.active:nth-child(4) .icon-box {
+		// 	background-image: url("/assets/icons/a-events.svg");
+		// }
 
-		li.active:nth-child(5) .icon-box {
+		li.active:nth-child(4) .icon-box {
 			background-image: url("/assets/icons/a-profile.svg");
 		}
 

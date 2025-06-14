@@ -1,0 +1,788 @@
+// Основні стилі детальної сторінки квеста
+.quest-detail-page {
+	min-height: 100vh;
+	color: var(--foreground);
+	margin: 90px 0;
+}
+
+// Завантаження та помилки
+.quest-detail-loading,
+.quest-detail-error {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 60px 20px;
+	text-align: center;
+}
+
+.quest-detail-loading {
+	gap: 12px;
+	font-size: 18px;
+}
+
+.quest-detail-error {
+	gap: 16px;
+
+	h2 {
+		font-size: 1.5rem;
+		color: var(--foreground);
+		margin: 0;
+	}
+
+	p {
+		color: rgba(255, 255, 255, 0.7);
+		margin: 0;
+	}
+}
+
+.loading-spinner {
+	width: 20px;
+	height: 20px;
+	border: 2px solid rgba(74, 237, 217, 0.3);
+	border-top-color: var(--accent);
+	border-radius: 50%;
+	animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+// Кнопка повернення
+.btn-back {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 8px;
+	padding: 10px 16px;
+	color: var(--foreground);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	margin-bottom: 24px;
+
+	&:hover {
+		background: rgba(74, 237, 217, 0.1);
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+}
+
+// Заголовок квеста
+.quest-detail-header {
+	display: grid;
+	grid-template-columns: 400px 1fr;
+	gap: 32px;
+	margin-bottom: 32px;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(74, 237, 217, 0.2);
+	border-radius: 16px;
+	padding: 24px;
+	backdrop-filter: blur(10px);
+}
+
+// Зображення квеста
+.quest-detail-image {
+	position: relative;
+	height: 240px;
+	border-radius: 12px;
+	overflow: hidden;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+.quest-completed-badge {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	background: rgba(34, 197, 94, 0.9);
+	color: white;
+	padding: 8px 16px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	backdrop-filter: blur(5px);
+}
+
+.quest-difficulty-badge {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	padding: 8px 16px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	backdrop-filter: blur(5px);
+}
+
+// Інформація про квест
+.quest-detail-info {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.quest-title {
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--foreground);
+	margin: 0;
+}
+
+.quest-description {
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 16px;
+	line-height: 1.6;
+	margin: 0;
+}
+
+// Статистика квеста
+.quest-stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+
+.quest-stat {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	background: rgba(0, 0, 0, 0.2);
+	padding: 8px 12px;
+	border-radius: 8px;
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.9);
+
+	svg {
+		color: var(--accent);
+		flex-shrink: 0;
+	}
+}
+
+// Інформація про НПС
+.quest-npc-info {
+	background: rgba(0, 0, 0, 0.2);
+	border-radius: 12px;
+	padding: 16px;
+}
+
+.npc-header {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	margin-bottom: 8px;
+
+	svg {
+		color: var(--accent);
+		margin-top: 2px;
+		flex-shrink: 0;
+	}
+
+	h3 {
+		color: var(--accent);
+		font-size: 16px;
+		font-weight: 600;
+		margin: 0 0 4px 0;
+	}
+
+	p {
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 14px;
+		margin: 0;
+		line-height: 1.4;
+	}
+}
+
+.npc-location {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 14px;
+
+	svg {
+		color: var(--accent);
+		flex-shrink: 0;
+	}
+
+	.coordinates {
+		background: rgba(74, 237, 217, 0.1);
+		color: var(--accent);
+		padding: 2px 6px;
+		border-radius: 4px;
+		font-family: monospace;
+		font-size: 12px;
+	}
+}
+
+// Табули
+.quest-tabs {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 24px;
+	background: rgba(0, 0, 0, 0.2);
+	padding: 4px;
+	border-radius: 12px;
+}
+
+.quest-tab {
+	flex: 1;
+	background: transparent;
+	border: none;
+	border-radius: 8px;
+	padding: 12px 16px;
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+
+	&:hover {
+		background: rgba(74, 237, 217, 0.1);
+		color: var(--accent);
+	}
+
+	&.active {
+		background: var(--accent);
+		color: var(--foreaccent);
+	}
+}
+
+// Контент табулів
+.quest-content {
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(74, 237, 217, 0.2);
+	border-radius: 16px;
+	padding: 24px;
+	margin-bottom: 24px;
+	backdrop-filter: blur(10px);
+}
+
+// Огляд квеста
+.quest-overview {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.overview-section {
+	h3 {
+		color: var(--accent);
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 0 0 12px 0;
+	}
+
+	p {
+		color: rgba(255, 255, 255, 0.9);
+		line-height: 1.6;
+		margin: 0;
+		font-size: 15px;
+	}
+}
+
+.quest-lore {
+	background: rgba(74, 237, 217, 0.1);
+	border: 1px solid rgba(74, 237, 217, 0.3);
+	border-radius: 8px;
+	padding: 16px;
+	margin-top: 16px;
+
+	h4 {
+		color: var(--accent);
+		font-size: 1rem;
+		font-weight: 600;
+		margin: 0 0 8px 0;
+	}
+
+	p {
+		color: rgba(255, 255, 255, 0.9);
+		font-style: italic;
+		line-height: 1.6;
+		margin: 0;
+	}
+}
+
+.requirements-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: rgba(255, 255, 255, 0.9);
+		font-size: 14px;
+
+		svg {
+			color: var(--accent);
+			flex-shrink: 0;
+		}
+	}
+}
+
+// Прогрес
+.quest-progress {
+	h3 {
+		color: var(--accent);
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 0 0 12px 0;
+	}
+
+	.progress-bar {
+		width: 100%;
+		height: 8px;
+		background: rgba(0, 0, 0, 0.3);
+		border-radius: 4px;
+		overflow: hidden;
+		margin-bottom: 8px;
+
+		.progress-fill {
+			height: 100%;
+			background: linear-gradient(90deg, var(--accent), rgba(74, 237, 217, 0.7));
+			border-radius: 4px;
+			transition: width 0.3s ease;
+		}
+	}
+
+	p {
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 14px;
+		margin: 0;
+	}
+}
+
+// Етапи квеста
+.quest-stages {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.stage-card {
+	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 12px;
+	padding: 20px;
+	transition: all 0.2s ease;
+
+	&.available {
+		border-color: rgba(74, 237, 217, 0.3);
+		background: rgba(74, 237, 217, 0.05);
+	}
+
+	&.completed {
+		border-color: rgba(34, 197, 94, 0.3);
+		background: rgba(34, 197, 94, 0.05);
+	}
+
+	&.locked {
+		opacity: 0.6;
+	}
+}
+
+.stage-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.stage-number {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+	color: var(--foreground);
+
+	svg {
+		flex-shrink: 0;
+	}
+}
+
+.stage-location {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 14px;
+
+	svg {
+		color: var(--accent);
+		flex-shrink: 0;
+	}
+}
+
+.stage-title {
+	color: var(--foreground);
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin: 0 0 8px 0;
+}
+
+.stage-description {
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 14px;
+	line-height: 1.5;
+	margin: 0 0 12px 0;
+}
+
+.stage-objectives {
+	h5 {
+		color: var(--accent);
+		font-size: 14px;
+		font-weight: 600;
+		margin: 0 0 8px 0;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+
+		li {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			color: rgba(255, 255, 255, 0.9);
+			font-size: 13px;
+
+			svg {
+				color: var(--accent);
+				flex-shrink: 0;
+			}
+		}
+	}
+}
+
+// Нагороди
+.quest-rewards {
+	h3 {
+		color: var(--accent);
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 0 0 20px 0;
+	}
+}
+
+.rewards-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 12px;
+}
+
+.reward-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid rgba(74, 237, 217, 0.2);
+	border-radius: 8px;
+	padding: 12px 16px;
+	transition: all 0.2s ease;
+
+	&:hover {
+		background: rgba(74, 237, 217, 0.1);
+		transform: translateY(-2px);
+	}
+
+	svg {
+		color: var(--accent);
+		flex-shrink: 0;
+	}
+
+	span {
+		color: var(--foreground);
+		font-size: 14px;
+		font-weight: 500;
+	}
+}
+
+// Поради та застереження
+.quest-tips {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.tips-section,
+.warnings-section {
+	h3 {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--accent);
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 0 0 16px 0;
+
+		svg {
+			flex-shrink: 0;
+		}
+	}
+}
+
+.tips-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	li {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		background: rgba(34, 197, 94, 0.1);
+		border: 1px solid rgba(34, 197, 94, 0.2);
+		border-radius: 8px;
+		padding: 12px;
+		color: rgba(255, 255, 255, 0.9);
+		font-size: 14px;
+		line-height: 1.5;
+
+		svg {
+			color: #22c55e;
+			flex-shrink: 0;
+			margin-top: 2px;
+		}
+	}
+}
+
+.warnings-section {
+	h3 {
+		color: #ef4444;
+
+		svg {
+			color: #ef4444;
+		}
+	}
+}
+
+.warnings-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	li {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		background: rgba(239, 68, 68, 0.1);
+		border: 1px solid rgba(239, 68, 68, 0.2);
+		border-radius: 8px;
+		padding: 12px;
+		color: rgba(255, 255, 255, 0.9);
+		font-size: 14px;
+		line-height: 1.5;
+
+		svg {
+			color: #ef4444;
+			flex-shrink: 0;
+			margin-top: 2px;
+		}
+	}
+}
+
+// Кнопки дій
+.quest-actions {
+	display: flex;
+	justify-content: center;
+	gap: 16px;
+}
+
+.btn-primary,
+.btn-secondary {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 14px 28px;
+	border-radius: 12px;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	border: none;
+
+	svg {
+		flex-shrink: 0;
+	}
+}
+
+.btn-primary {
+	background: var(--accent);
+	color: var(--foreaccent);
+
+	&:hover {
+		background: rgba(74, 237, 217, 0.9);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 16px rgba(74, 237, 217, 0.3);
+	}
+}
+
+.btn-secondary {
+	background: rgba(0, 0, 0, 0.2);
+	color: rgba(255, 255, 255, 0.6);
+	cursor: not-allowed;
+
+	&:disabled {
+		opacity: 0.5;
+	}
+}
+
+// Адаптивність
+@media (max-width: 1024px) {
+	.quest-detail-header {
+		grid-template-columns: 300px 1fr;
+		gap: 24px;
+		padding: 20px;
+	}
+
+	.quest-detail-image {
+		height: 200px;
+	}
+}
+
+@media (max-width: 768px) {
+	.quest-detail-header {
+		grid-template-columns: 1fr;
+		gap: 20px;
+		padding: 16px;
+	}
+
+	.quest-detail-image {
+		height: 180px;
+	}
+
+	.quest-title {
+		font-size: 1.5rem;
+	}
+
+	.quest-stats {
+		gap: 8px;
+	}
+
+	.quest-stat {
+		font-size: 13px;
+		padding: 6px 10px;
+	}
+
+	.quest-tabs {
+		flex-wrap: wrap;
+		gap: 2px;
+	}
+
+	.quest-tab {
+		padding: 8px 12px;
+		font-size: 13px;
+	}
+
+	.quest-content {
+		padding: 16px;
+	}
+
+	.rewards-grid {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.quest-actions {
+		flex-direction: column;
+		align-items: stretch;
+
+		.btn-primary,
+		.btn-secondary {
+			justify-content: center;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.btn-back {
+		padding: 8px 12px;
+		font-size: 13px;
+		margin-bottom: 16px;
+	}
+
+	.npc-location {
+		.coordinates {
+			display: none;
+		}
+	}
+
+	.quest-detail-header {
+		padding: 12px;
+		gap: 16px;
+	}
+
+	.quest-detail-image {
+		height: 160px;
+	}
+
+	.quest-title {
+		font-size: 1.25rem;
+	}
+
+	.quest-description {
+		font-size: 14px;
+	}
+
+	.quest-npc-info {
+		padding: 12px;
+	}
+
+	.npc-header {
+		h3 {
+			font-size: 14px;
+		}
+
+		p {
+			font-size: 13px;
+		}
+	}
+
+	.stage-card {
+		padding: 16px;
+	}
+
+	.stage-title {
+		font-size: 1rem;
+	}
+
+	.tips-list li,
+	.warnings-list li {
+		padding: 10px;
+		font-size: 13px;
+	}
+}

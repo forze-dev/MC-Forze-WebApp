@@ -29,7 +29,7 @@ const Footer = () => {
 							<li><Link to={ROUTES.HOME}>Головна</Link></li>
 							<li><Link to={ROUTES.SHOP}>Магазин</Link></li>
 							{/* <li><Link to={ROUTES.MINI_GAMES}>Ігри</Link></li> */}
-							{/* <li><Link to={ROUTES.EVENTS}>Події</Link></li> */}
+							<li><Link to={ROUTES.QUESTS}>Квести</Link></li>
 							<li><Link to={ROUTES.PROFILE}>Профіль</Link></li>
 						</ul>
 					</div>

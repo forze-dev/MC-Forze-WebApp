@@ -40,16 +40,16 @@ const Navigation = () => {
 						</span>
 					</NavLink>
 				</li> */}
-				{/* <li className={pathname === ROUTES.EVENTS ? "active" : ""}>
-					<NavLink to={ROUTES.EVENTS}>
+				<li className={pathname === ROUTES.EVENTS ? "active" : ""}>
+					<NavLink to={ROUTES.QUESTS}>
 						<figure className="icon-box">
 
 						</figure>
 						<span>
-							Події
+							Квести
 						</span>
 					</NavLink>
-				</li> */}
+				</li>
 				{
 					user &&
 					<li className={`btn ${pathname === ROUTES.PROFILE ? "active" : ""}`}>
