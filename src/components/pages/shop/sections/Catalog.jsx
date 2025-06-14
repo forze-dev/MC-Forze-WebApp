@@ -4,6 +4,7 @@ import shopService from '../../../../services/shop.service';
 import ProductCard from '../components/ProductCard';
 import CatalogFilters from '../components/CatalogFilters';
 import "../styles/catalog.scss";
+import DonationButton from '../../../common/DonationModal/DonationModal';
 
 const Catalog = () => {
 	const { user, isAuthenticated } = useAuth();
@@ -95,13 +96,18 @@ const Catalog = () => {
 		<section className="Catalog">
 			<div className="container">
 				<div className="catalog-header">
-					<h1>Каталог товарів</h1>
-					<p className="catalog-subtitle">
-						{isAuthenticated
-							? `Вітаємо, ${user?.minecraft_nick || user?.minecraftNick}! Твоя знижка: ${user?.discount_percent || 0}%`
-							: 'Увійдіть в акаунт для персональних знижок'
-						}
-					</p>
+					<div className="catalog-header__box">
+						<h1>Каталог товарів</h1>
+						<p className="catalog-subtitle">
+							{isAuthenticated
+								? `Вітаємо, ${user?.minecraft_nick || user?.minecraftNick}! Твоя знижка: ${user?.discount_percent || 0}%`
+								: 'Увійдіть в акаунт для персональних знижок'
+							}
+						</p>
+					</div>
+					<div className="Catalog__DonationButton">
+						<DonationButton />
+					</div>
 				</div>
 
 				<div className="catalog-layout">
