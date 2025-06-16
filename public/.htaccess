@@ -4,8 +4,8 @@ RewriteEngine On
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
-# Вимкнення прямого доступу до файлів .env та .json
-<FilesMatch "\.(env|json)$">
+# Вимкнення прямого доступу до файлів .env
+<FilesMatch "\.(env)$">
   Require all denied
 </FilesMatch>
 
